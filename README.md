@@ -2,10 +2,6 @@
 
 <div align="center">
 
-<img src="assets/hero/nuorder-hero.webp" alt="NUOrder Banner" width="100%" />
-
-# Order Smarter. Eat Better.
-
 ### An AI-powered food ordering platform combining food discovery, nutrition intelligence, personalized recommendations, secure payments, and interactive order tracking.
 
 <br/>
