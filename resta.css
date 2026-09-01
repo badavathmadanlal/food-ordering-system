@@ -1,284 +1,4549 @@
+/* ==================================================
+   NUOrder — AI-Driven Food Platform
+   Design Tokens & Modern High-Tech Stylesheet
+   Task 3.6: Premium Full-Page UI/UX Redesign & Micro-Animations
+   ================================================== */
 
+:root {
+    --nu-bg: #07090B;
+    --nu-bg-soft: #0B0E12;
+    --nu-surface: #111419;
+    --nu-surface-2: #15191F;
+    --nu-surface-card: #14181E;
+    --nu-surface-hover: #1C222B;
+    --nu-border: rgba(255, 255, 255, 0.09);
+    --nu-border-hover: rgba(0, 229, 153, 0.35);
+    --nu-text: #F5F7FA;
+    --nu-muted: #9299A5;
+    --nu-accent: #00E599;
+    --nu-accent-hover: #00C885;
+    --nu-accent-dark: #06110D;
+    --nu-accent-dim: rgba(0, 229, 153, 0.12);
+    --nu-warning: #FFC107;
+    --nu-danger: #FF4D4F;
+    --nu-veg: #00E599;
+    --nu-non-veg: #FF4D4F;
 
-.food-munch-logo {
-    width: 80px;
-    height: 70px;
+    /* Legacy Token Compatibility */
+    --nu-black: var(--nu-bg);
+    --nu-charcoal: var(--nu-surface);
+    --nu-border-light: rgba(255, 255, 255, 0.15);
+    --nu-white: #FFFFFF;
+    --nu-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --nu-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+    --nu-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --nu-transition-fast: 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    --nu-transition-normal: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    --nu-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --nu-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --nu-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+    --nu-shadow-accent: 0 0 20px rgba(0, 229, 153, 0.22);
 }
 
-#navItem1 {
-    color: #323f4b;
-    font-family: "Serif";
-    font-size: 20px;
+/* Global Reset & Base Typography */
+* {
+    box-sizing: border-box;
 }
 
-#navItem2 {
-    color: #323f4b;
-    font-family: "Serif";
-    font-size: 20px;
+html {
+    scroll-behavior: smooth;
 }
 
-#navItem3 {
-    color: #323f4b;
-    font-family: "Serif";
-    font-size: 20px;
+body {
+    background-color: var(--nu-bg);
+    color: var(--nu-text);
+    font-family: var(--nu-font-sans);
+    margin: 0;
+    padding-top: 76px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-#navItem4 {
-    color: #323f4b;
-    font-size: 20px;
-    font-family: "Serif";
+/* Consistent Section Spacing */
+section {
+    padding: 72px 0;
+    position: relative;
 }
 
-.banner-section-bg-container {
-    background-image: url("https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/foodmunch-banner-bg.png");
-    height: 100vh;
-    background-size: cover;
+@media (max-width: 991px) {
+    section {
+        padding: 48px 0;
+    }
 }
 
-.banner-heading {
-    color: white;
-    font-family: "Serif";
-    font-size: 50px;
-    font-weight: 300;
+@media (max-width: 576px) {
+    section {
+        padding: 36px 0;
+    }
 }
 
-.banner-caption {
-    color: #f5f7fa;
-    font-family: "Serif";
-    font-size: 30px;
-    font-weight: 300;
+/* Accessibility Focus Visible */
+:focus-visible {
+    outline: 2px solid var(--nu-accent);
+    outline-offset: 2px;
 }
 
-.custom-button {
-    color: white;
-    background-image: linear-gradient(#d0b200, #a58d00);
-    width: 130px;
-    height: 45px;
-    border-width: 0;
+/* ==================================================
+   GLOBAL ANIMATION SYSTEM & REUSABLE CLASSES (Task 3.6)
+   ================================================== */
+.nu-reveal {
+    opacity: 0;
+    transition: opacity 0.6s var(--nu-ease-spring), transform 0.6s var(--nu-ease-spring);
+    will-change: opacity, transform;
+}
+
+.nu-reveal-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s var(--nu-ease-spring), transform 0.6s var(--nu-ease-spring);
+    will-change: opacity, transform;
+}
+
+.nu-reveal-scale {
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.6s var(--nu-ease-spring), transform 0.6s var(--nu-ease-spring);
+    will-change: opacity, transform;
+}
+
+.nu-reveal.nu-visible,
+.nu-reveal-up.nu-visible,
+.nu-reveal-scale.nu-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.nu-delay-1 { transition-delay: 60ms; }
+.nu-delay-2 { transition-delay: 120ms; }
+.nu-delay-3 { transition-delay: 180ms; }
+.nu-delay-4 { transition-delay: 240ms; }
+.nu-delay-5 { transition-delay: 300ms; }
+
+/* Micro-Interaction Classes */
+.nu-hover-lift {
+    transition: transform 0.28s var(--nu-ease-spring), border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.nu-hover-lift:hover {
+    transform: translateY(-4px);
+    border-color: var(--nu-border-hover) !important;
+    box-shadow: var(--nu-shadow-md);
+}
+
+.nu-glow-hover {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.nu-glow-hover:hover {
+    border-color: var(--nu-border-hover) !important;
+    box-shadow: var(--nu-shadow-accent);
+}
+
+/* Subtle Shimmer */
+.nu-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: nuShimmerAnim 2.5s infinite;
+}
+
+@keyframes nuShimmerAnim {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Floating Keyframes */
+@keyframes nuFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.nu-floating-asset {
+    animation: nuFloat 4.5s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Ambient Hero Glow */
+.nu-hero-ambient-glow {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 75% 30%, rgba(0, 229, 153, 0.10), transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(50px);
+}
+
+/* Section Eyebrow Component */
+.nu-section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--nu-accent);
+    background: var(--nu-accent-dim);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 229, 153, 0.25);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .nu-reveal, .nu-reveal-up, .nu-reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .nu-floating-asset {
+        animation: none !important;
+    }
+}
+
+/* ==================================================
+   1. High-Tech Navbar Component
+   ================================================== */
+.nu-navbar {
+    background-color: rgba(15, 17, 21, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 10px 0;
+    transition: all var(--nu-transition-fast);
+    z-index: 1030;
+}
+
+.nu-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none !important;
+}
+
+.nu-brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
     border-radius: 8px;
-    margin-right: 10px;
+    color: var(--nu-accent);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: -0.5px;
 }
 
-.custom-outline-button {
-    color: #d0b200;
-    background-color: transparent;
-    width: 130px;
-    height: 45px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #d0b200;
+.nu-brand-text {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--nu-white);
+    letter-spacing: -0.5px;
+}
+
+.nu-brand-badge {
+    background: var(--nu-accent-dim);
+    color: var(--nu-accent);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nu-nav-center {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.nu-navbar .navbar-nav .nav-link {
+    color: var(--nu-muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
     border-radius: 8px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+    text-decoration: none !important;
 }
 
-.wcu-section {
-    background-color: #f9fbfe;
+.nu-navbar .navbar-nav .nav-link:hover {
+    color: var(--nu-white);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-.wcu-section-heading {
-    color: #183b56;
-    font-family: "Serif";
-    font-size: 32px;
+.nu-navbar .navbar-nav .nav-link.active {
+    color: #00E599 !important;
+    background-color: rgba(0, 229, 153, 0.14) !important;
+    border-color: rgba(0, 229, 153, 0.25) !important;
     font-weight: 700;
 }
 
-.wcu-section-description {
-    color: #5a7184;
-    font-family: "Serif";
-    font-size: 19px;
+.nu-nav-ai-badge {
+    font-size: 10px;
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 4px;
 }
 
-.wcu-card {
+.nu-nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nu-location-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+    text-align: left;
+}
+
+.nu-location-btn:hover {
+    border-color: var(--nu-accent);
+    color: var(--nu-white);
+    transform: translateY(-1px);
+}
+
+.nu-location-icon {
+    color: var(--nu-accent);
+    font-size: 14px;
+}
+
+.nu-location-label {
+    display: block;
+    font-size: 10px;
+    color: var(--nu-muted);
+    line-height: 1;
+}
+
+.nu-location-val {
+    display: block;
+    font-weight: 600;
+    color: var(--nu-text);
+    max-width: 110px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.nu-location-edit-badge {
+    background: rgba(0, 229, 153, 0.12);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    color: var(--nu-accent);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.nu-location-btn:hover .nu-location-edit-badge {
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    border-color: var(--nu-accent);
+}
+
+.nu-location-quick-edit-btn {
+    border-color: rgba(0, 229, 153, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.nu-location-quick-edit-btn:hover {
+    background: var(--nu-accent-dim) !important;
+    border-color: var(--nu-accent) !important;
+    transform: translateY(-1px);
+}
+
+/* Task 4.7C Fix 1: Save Delivery Address Button & Multi-Address Styles */
+.nu-save-addr-btn {
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.nu-save-addr-btn.valid,
+.nu-save-addr-btn:not(:disabled) {
+    background: var(--nu-accent) !important;
+    color: var(--nu-black) !important;
+    border: 1px solid var(--nu-accent) !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+}
+
+.nu-save-addr-btn.valid:hover,
+.nu-save-addr-btn:not(:disabled):hover {
+    background: #00c784 !important;
+    box-shadow: 0 4px 14px rgba(0, 229, 153, 0.3);
+}
+
+.nu-save-addr-btn.disabled,
+.nu-save-addr-btn:disabled {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: var(--nu-muted) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.nu-label-pill {
+    border-color: var(--nu-border) !important;
+    color: var(--nu-muted) !important;
+    transition: all 0.2s ease;
+}
+
+.nu-label-pill.active,
+.nu-label-pill:hover {
+    background: rgba(0, 229, 153, 0.12) !important;
+    border-color: var(--nu-accent) !important;
+    color: var(--nu-white) !important;
+}
+
+/* Task 4.7C Fix 2: Saved Delivery Address Card & Responsive Button Structure */
+.nu-saved-address-card-item {
+    background: var(--nu-surface, #161b22) !important;
+    border: 1px solid var(--nu-border, rgba(255, 255, 255, 0.12)) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: all 0.2s ease;
+}
+
+.nu-saved-address-card-item:hover {
+    border-color: rgba(0, 229, 153, 0.35) !important;
+}
+
+.nu-badge-default {
+    background: rgba(0, 229, 153, 0.12) !important;
+    color: var(--nu-accent, #00E599) !important;
+    border: 1px solid rgba(0, 229, 153, 0.3) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nu-badge-active {
+    background: rgba(0, 229, 153, 0.2) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--nu-accent, #00E599) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nu-addr-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.nu-addr-primary-btn-col {
+    flex: 1 1 auto;
+    min-width: 170px;
+}
+
+.nu-addr-secondary-btn-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Primary "Use This Address" Button */
+.nu-use-addr-btn {
+    background: var(--nu-accent, #00E599) !important;
+    color: var(--nu-black, #0c0f12) !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--nu-accent, #00E599) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
     text-align: center;
-    background-color: white;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #e5eaf4;
-    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 229, 153, 0.25);
+    white-space: nowrap;
 }
 
-.wcu-card-image {
-    width: 87px;
-    height: 90px;
+.nu-use-addr-btn:hover {
+    background: #00c784 !important;
+    box-shadow: 0 4px 14px rgba(0, 229, 153, 0.4) !important;
+    color: var(--nu-black, #0c0f12) !important;
 }
 
-.wcu-card-title {
-    color: #323f4b;
-    font-family: "Serif";
-    font-size: 26px;
-    font-weight: 500;
+.nu-use-addr-btn.active {
+    background: rgba(0, 229, 153, 0.18) !important;
+    color: var(--nu-accent, #00E599) !important;
+    border-color: var(--nu-accent, #00E599) !important;
+    box-shadow: none !important;
 }
 
-.wcu-card-description {
-    color: #7b8794;
-    font-family: "Serif";
-    font-size: 19px;
+/* Edit & Make Default Secondary Buttons */
+.nu-addr-edit-btn,
+.nu-addr-default-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #e6edf3 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    padding: 7px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap;
 }
 
-.offers {
-    color: #323f4b;
-    font-style: italic;
+.nu-addr-edit-btn:hover,
+.nu-addr-default-btn:hover {
+    background: rgba(0, 229, 153, 0.12) !important;
+    border-color: var(--nu-accent, #00E599) !important;
+    color: var(--nu-accent, #00E599) !important;
+}
+
+/* Delete Button */
+.nu-addr-delete-btn {
+    background: rgba(220, 53, 69, 0.08) !important;
+    color: #ff6b6b !important;
+    border: 1px solid rgba(220, 53, 69, 0.3) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    padding: 7px 12px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap;
+}
+
+.nu-addr-delete-btn:hover {
+    background: rgba(220, 53, 69, 0.2) !important;
+    border-color: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+/* Mobile Responsive Layout for Address Action Buttons */
+@media (max-width: 576px) {
+    .nu-addr-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .nu-addr-primary-btn-col {
+        width: 100%;
+    }
+
+    .nu-addr-primary-btn-col .btn {
+        width: 100%;
+    }
+
+    .nu-addr-secondary-btn-col {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nu-addr-secondary-btn-col .btn {
+        flex: 1 1 auto;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+.nu-search-wrapper {
+    position: relative;
+    width: 210px;
+}
+
+.nu-search-input {
+    width: 100%;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    font-size: 13px;
+    padding: 7px 32px 7px 12px;
+    border-radius: 8px;
+    outline: none;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-search-input:focus {
+    border-color: var(--nu-accent);
+    box-shadow: 0 0 0 2px var(--nu-accent-dim);
+    width: 250px;
+}
+
+.nu-search-input::placeholder {
+    color: var(--nu-muted);
+}
+
+.nu-search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nu-muted);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.nu-nav-icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 8px;
+    color: var(--nu-text);
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+    text-decoration: none !important;
+}
+
+.nu-nav-icon-btn:hover {
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    transform: translateY(-1px);
+}
+
+.nu-cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    font-size: 10px;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--nu-charcoal);
+}
+
+.dropdown-menu-nu {
+    background-color: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 10px;
+    padding: 6px;
+    min-width: 180px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    margin-top: 8px;
+}
+
+.dropdown-menu-nu .dropdown-item {
+    color: var(--nu-muted);
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+}
+
+.dropdown-menu-nu .dropdown-item:hover {
+    color: var(--nu-white);
+    background-color: var(--nu-surface-hover);
+}
+
+.dropdown-menu-nu .dropdown-divider {
+    border-top: 1px solid var(--nu-border);
+    margin: 4px 0;
+}
+
+.dropdown-menu-nu .dropdown-item.text-accent {
+    color: var(--nu-accent);
     font-weight: 600;
 }
 
-.explore-menu-section {
-    background-color: white;
+/* ==================================================
+   2. Mobile Fixed Bottom Navigation Bar
+   ================================================== */
+.nu-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: rgba(15, 17, 21, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--nu-border);
+    z-index: 1030;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
 }
 
-.menu-section-heading {
-    color: #183b56;
-    font-family: "Serif";
-    font-size: 33px;
-    font-weight: 700;
-}
-
-.menu-item-image {
-    border-radius: 16px;
-}
-
-.menu-card-title {
-    color: #323f4b;
-    font-family: "Serif";
-    font-size: 23px;
+.nu-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--nu-muted);
+    font-size: 11px;
     font-weight: 500;
-    margin-top: 24px;
-}
-
-.menu-item-link {
-    color: #d0b200;
-    font-family: "Serif";
-    font-size: 19px;
-    font-weight: 500;
-}
-
-.menu-item-card:hover {
-    border-radius: 16px;
-    transition: 0.5s ease-in-out;
-    cursor: pointer;
-    ;
-    transform: scale(1.05);
-
-}
-
-.healthy-food-section {
-    background-color: #f9fbfe;
-}
-
-.healthy-food-section-img {
-    width: 270px;
-}
-
-.healthy-food-section-heading {
-    color: #183b56;
-    font-family: "Serif";
-    font-size: 33px;
-    font-weight: 700;
-}
-
-.healthy-food-section-description {
-    color: #5a7184;
-    font-family: "Serif";
-    font-size: 20px;
-}
-
-.delivery-and-payment-section {
-    background-color: white;
-}
-
-.delivery-and-payment-section-img {
-    width: 270px;
-}
-
-.delivery-and-payment-section-heading {
-    color: #183b56;
-    font-family: "Serif";
-    font-size: 33px;
-    font-weight: 700;
-}
-
-.delivery-and-payment-section-description {
-    color: #5a7184;
-    font-family: "Serif";
-    font-size: 19px;
-}
-
-.payment-card-img {
-    width: 50px;
-    height: 50px;
-    margin-right: 28px;
-}
-
-.thanking-customers-section-modal-title {
-    color: #d0b200;
-    font-weight: 800;
-}
-
-.thanking-customers-section {
-
-    background-image: radial-gradient(#fff8db, #fae38c);
-
-}
-
-.thanking-customers-section-heading {
-    color: #183b56;
-    font-family: "Serif";
-    font-size: 33px;
-    font-weight: 700;
-}
-
-.thanking-customers-section-description {
-    color: #5a7184;
-    font-family: "Serif";
-    font-size: 19px;
-}
-
-.thanking-customers-section-img {
-    width: 270px;
-    margin-bottom: 20px;
-}
-
-.follow-us-section {
-    background-color: white;
-}
-
-.follow-us-section-heading {
-    font-family: "Serif";
-    font-weight: 700;
-    font-size: 33px;
-    color: #183b56;
+    text-decoration: none !important;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: color 0.2s ease;
+    position: relative;
+    flex: 1;
     text-align: center;
 }
 
-.footer-section {
-    background-color: #0d2436;
+.nu-bottom-nav-item i {
+    font-size: 18px;
+    margin-bottom: 2px;
+    transition: transform 0.2s ease;
 }
 
-.footer-section-mail-id {
-    color: #959ead;
-    font-family: "Serif";
-    font-weight: bold;
-    font-size: 19px;
-    margin-top: 20px;
+.nu-bottom-nav-item.active {
+    color: var(--nu-accent);
 }
 
-.footer-section-address {
-    color: #959ead;
-    font-family: "Serif";
+.nu-bottom-nav-badge {
+    position: absolute;
+    top: 2px;
+    right: calc(50% - 16px);
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    font-size: 9px;
+    font-weight: 800;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--nu-charcoal);
+}
+
+/* ==================================================
+   3. Floating Cart Bar (Compact Desktop & Mobile)
+   ================================================== */
+.nu-floating-cart-bar {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 300px;
+    height: 58px;
+    background: linear-gradient(135deg, #00E599 0%, #00C885 100%);
+    color: #06110D;
+    border-radius: 18px;
+    padding: 10px 20px;
+    z-index: 1035;
+    box-shadow: 0 12px 32px rgba(0, 229, 153, 0.35), 0 4px 14px rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    animation: nuFadeInUp 0.3s var(--nu-ease-out);
+    transition: transform var(--nu-transition-fast), box-shadow var(--nu-transition-fast);
+}
+
+.nu-floating-cart-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(0, 229, 153, 0.5);
+}
+
+.nu-floating-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nu-floating-cart-info i {
     font-size: 18px;
 }
 
-.follow-us-icon-container {
-    width: 80px;
-    height: 80px;
-    background-color: #faf7e8;
-    padding-right: 16px;
-    padding-left: 22px;
-    padding-bottom: 14px;
-    padding-top: 22px;
-    margin: 15px;
-    border-radius: 40px;
+.nu-floating-cart-action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.icon {
-    color: #d0b200;
-    font-size: 35px;
+/* ==================================================
+   4. Premium Button Styles & Light Sweep Animation
+   ================================================== */
+.custom-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nu-black) !important;
+    background-color: var(--nu-accent);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 22px;
+    border: 0;
+    border-radius: 10px;
+    text-decoration: none !important;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform var(--nu-transition-fast), background-color var(--nu-transition-fast), box-shadow var(--nu-transition-fast);
+    box-shadow: 0 4px 14px rgba(0, 229, 153, 0.2);
+}
+
+.custom-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-20deg);
+    transition: none;
+}
+
+.custom-button:hover:not(:disabled) {
+    background-color: var(--nu-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 229, 153, 0.35);
+}
+
+.custom-button:hover:not(:disabled)::after {
+    left: 150%;
+    transition: left 0.65s ease-in-out;
+}
+
+.custom-outline-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nu-white) !important;
+    background-color: rgba(255, 255, 255, 0.03);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 9px 20px;
+    border: 1px solid var(--nu-border);
+    border-radius: 10px;
+    text-decoration: none !important;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all var(--nu-transition-fast);
+}
+
+.custom-outline-button:hover:not(:disabled) {
+    border-color: var(--nu-accent);
+    color: var(--nu-accent) !important;
+    background-color: var(--nu-accent-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* ==================================================
+   5. Studio Restaurant Hero Section
+   ================================================== */
+.nu-hero-section {
+    position: relative;
+    background: radial-gradient(circle at 80% 30%, rgba(0, 229, 153, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(16, 19, 24, 0.9) 0%, var(--nu-bg) 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 72px 0 60px;
+    border-bottom: 1px solid var(--nu-border);
+    overflow: hidden;
+}
+
+.nu-hero-heading {
+    color: var(--nu-white);
+    font-size: clamp(34px, 5.5vw, 56px);
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -1.2px;
+    margin-bottom: 16px;
+    animation: nuFadeInUp 0.6s var(--nu-ease-out);
+}
+
+.nu-hero-caption {
+    color: var(--nu-muted);
+    font-size: clamp(15px, 2vw, 18px);
+    font-weight: 400;
+    line-height: 1.65;
+    animation: nuFadeInUp 0.7s var(--nu-ease-out);
+}
+
+.nu-hero-cta {
+    padding: 12px 26px;
+    font-size: 14.5px;
+    border-radius: 12px;
+}
+
+.nu-hero-location-tag {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--nu-muted);
+    transition: all var(--nu-transition-fast);
+    cursor: pointer;
+}
+
+.nu-hero-location-tag:hover {
+    border-color: var(--nu-accent);
+    color: var(--nu-white);
+    background: var(--nu-surface-hover);
+}
+
+.nu-hero-visual-card {
+    position: relative;
+    border-radius: 24px;
+    padding: 10px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(0, 229, 153, 0.12) 100%);
+    border: 1px solid var(--nu-border);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    animation: nuFadeInUp 0.8s var(--nu-ease-out);
+}
+
+.nu-hero-main-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 18px;
+    display: block;
+    transition: transform 0.4s var(--nu-ease-spring);
+}
+
+.nu-hero-visual-card:hover .nu-hero-main-img {
+    transform: scale(1.02);
+}
+
+.nu-hero-img-overlay {
+    position: absolute;
+    inset: 10px;
+    border-radius: 18px;
+    background: linear-gradient(to top, rgba(7, 9, 11, 0.75) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+.nu-hero-chip {
+    position: absolute;
+    background: rgba(16, 19, 24, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nu-white);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.chip-top-right {
+    top: 24px;
+    right: 24px;
+}
+
+.chip-bottom-left {
+    bottom: 24px;
+    left: 24px;
+}
+
+.nu-badge-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--nu-accent-dim);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nu-accent);
+    font-size: 14px;
+}
+
+/* ==================================================
+   6. Quick Discovery & Search Bar
+   ================================================== */
+.nu-quick-discovery-bar {
+    background: var(--nu-charcoal);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 18px 0;
+}
+
+.nu-quick-search-box {
+    position: relative;
+    width: 100%;
+}
+
+.nu-quick-search-input {
+    width: 100%;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    padding: 12px 42px 12px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-quick-search-input:focus {
+    border-color: var(--nu-accent);
+    box-shadow: 0 0 0 3px var(--nu-accent-dim);
+}
+
+.nu-quick-search-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nu-accent);
+    font-size: 16px;
+}
+
+.nu-tag-chip {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-muted);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+    text-decoration: none !important;
+}
+
+.nu-tag-chip:hover {
+    color: var(--nu-accent);
+    border-color: var(--nu-accent);
+    transform: translateY(-1px);
+}
+
+/* ==================================================
+   7. Categories Grid & Explore Menu
+   ================================================== */
+.explore-menu-section {
+    background-color: var(--nu-black);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 48px 0;
+}
+
+.section-header-title {
+    color: var(--nu-white);
+    font-size: clamp(23px, 3vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.section-header-sub {
+    color: var(--nu-muted);
+    font-size: 14px;
+}
+
+.menu-item-card {
+    background-color: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    transition: transform var(--nu-transition-normal), border-color var(--nu-transition-normal), box-shadow var(--nu-transition-normal);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    outline: none;
+}
+
+.menu-item-card:hover,
+.menu-item-card:focus-visible {
+    border-color: var(--nu-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.category-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--nu-charcoal);
+}
+
+.menu-item-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.menu-item-card:hover .menu-item-image {
+    transform: scale(1.03);
+}
+
+.category-count-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(8, 9, 11, 0.88);
+    backdrop-filter: blur(6px);
+    color: var(--nu-accent);
+    border: 1px solid rgba(0, 229, 153, 0.4);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.menu-card-title {
+    color: var(--nu-white);
+    font-size: 17px;
+    font-weight: 700;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.category-card-desc {
+    color: var(--nu-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.menu-item-link {
+    color: var(--nu-accent);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+}
+
+.menu-item-card:hover .menu-item-link {
+    color: var(--nu-accent-hover);
+}
+
+.menu-item-link svg {
+    fill: var(--nu-accent);
+    transition: transform 0.2s ease;
+}
+
+.menu-item-card:hover .menu-item-link svg {
+    transform: translateX(4px);
+}
+
+/* ==================================================
+   8. Navigation Breadcrumbs & Back Actions
+   ================================================== */
+.nu-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--nu-muted);
+    margin-bottom: 10px;
+}
+
+.nu-breadcrumb a {
+    color: var(--nu-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nu-breadcrumb a:hover {
+    color: var(--nu-accent);
+}
+
+.nu-breadcrumb-active {
+    color: var(--nu-white);
+    font-weight: 600;
+}
+
+.nu-breadcrumb-separator {
+    color: var(--nu-border-light);
+    font-size: 11px;
+}
+
+.nu-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+    text-decoration: none !important;
+}
+
+.nu-back-btn:hover {
+    color: var(--nu-accent);
+    border-color: var(--nu-accent);
+    background: var(--nu-surface-hover);
+    transform: translateX(-3px);
+}
+
+/* ==================================================
+   9. Polished Filter & Discovery Toolbar (Task 3.3A)
+   ================================================== */
+.nu-discovery-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: nowrap;
+}
+
+.nu-toolbar-search {
+    position: relative;
+    flex: 1 1 280px;
+    min-width: 200px;
+    max-width: 380px;
+}
+
+.nu-toolbar-input {
+    width: 100%;
+    height: 42px;
+    background-color: var(--nu-surface);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    color: var(--nu-text);
+    font-size: 14px;
+    padding: 0 38px 0 18px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nu-toolbar-input:focus {
+    border-color: var(--nu-accent);
+    box-shadow: 0 0 0 2px var(--nu-accent-dim);
+}
+
+.nu-toolbar-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nu-muted);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.nu-filter-pills-track {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+    padding: 2px 0;
+}
+
+.nu-filter-pills-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* High-Tech Filter Pill Buttons */
+.filter-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 16px;
+    background-color: var(--nu-surface);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    color: #E8EAF0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    flex-shrink: 0;
+}
+
+.filter-pill-btn:hover {
+    color: var(--nu-white);
+    border-color: var(--nu-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 229, 153, 0.2);
+}
+
+.filter-pill-btn.active {
+    background-color: var(--nu-accent) !important;
+    border-color: var(--nu-accent) !important;
+    color: #06110D !important;
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(0, 229, 153, 0.4);
+}
+
+.filter-pill-btn.active i,
+.filter-pill-btn.active span {
+    color: #06110D !important;
+}
+
+.filter-pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.filter-pill-dot.veg { background-color: var(--nu-accent); }
+.filter-pill-btn.active .filter-pill-dot.veg { background-color: #06110D; }
+
+/* Clean Sort Dropdown */
+.nu-toolbar-sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.nu-sort-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nu-muted);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.nu-sort-select-wrapper {
+    position: relative;
+}
+
+.discovery-sort-select {
+    height: 42px;
+    background-color: var(--nu-surface);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 999px;
+    color: #E8EAF0;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 36px 0 16px;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A7ADB7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: all 0.2s ease;
+}
+
+.discovery-sort-select:focus,
+.discovery-sort-select:hover {
+    border-color: var(--nu-accent);
+    color: var(--nu-white);
+}
+
+.discovery-sort-select option {
+    background-color: var(--nu-charcoal);
+    color: var(--nu-white);
+    padding: 10px;
+}
+
+/* ==================================================
+   10. Category $\rightarrow$ Partner Restaurant Cards Grid
+   ================================================== */
+.nu-restaurant-card {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all var(--nu-transition-normal);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nu-restaurant-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 229, 153, 0.45);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.restaurant-img-wrap {
+    position: relative;
+    height: 170px;
+    overflow: hidden;
+    background: var(--nu-charcoal);
+}
+
+.restaurant-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.nu-restaurant-card:hover .restaurant-img {
+    transform: scale(1.04);
+}
+
+.nu-status-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    backdrop-filter: blur(8px);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nu-status-badge.open {
+    color: var(--nu-accent);
+    background: rgba(8, 9, 11, 0.88);
+    border: 1px solid rgba(0, 229, 153, 0.4);
+}
+
+.nu-status-badge.closed {
+    color: var(--nu-danger);
+    background: rgba(8, 9, 11, 0.88);
+    border: 1px solid rgba(255, 77, 79, 0.4);
+}
+
+.restaurant-offer-tag {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(8, 9, 11, 0.9);
+    border: 1px solid rgba(0, 229, 153, 0.4);
+    color: var(--nu-accent);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.restaurant-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.restaurant-title {
+    color: var(--nu-white);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.restaurant-cuisine {
+    color: var(--nu-muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.restaurant-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--nu-muted);
+    padding: 10px 0;
+    border-top: 1px solid var(--nu-border);
+    border-bottom: 1px solid var(--nu-border);
+    margin-bottom: 12px;
+}
+
+/* ==================================================
+   11. Dedicated Restaurant Menu View
+   ================================================== */
+.nu-rest-header-card {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.nu-rest-header-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.nu-rest-header-content {
+    padding: 20px 24px;
+}
+
+.nu-rest-cat-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 0 16px;
+    scrollbar-width: none;
+}
+
+.nu-rest-cat-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.nu-rest-cat-pill {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-rest-cat-pill:hover {
+    color: var(--nu-white);
+    border-color: var(--nu-border-light);
+}
+
+.nu-rest-cat-pill.active {
+    background: var(--nu-accent-dim);
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    font-weight: 700;
+}
+
+/* ==================================================
+   12. Food Cards Component
+   ================================================== */
+.nu-food-card {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform var(--nu-transition-normal), border-color var(--nu-transition-normal), box-shadow var(--nu-transition-normal);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nu-food-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 229, 153, 0.45);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+}
+
+.food-card-img-container {
+    position: relative;
+    height: 170px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--nu-charcoal);
+}
+
+.food-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.nu-food-card:hover .food-card-img {
+    transform: scale(1.02);
+}
+
+.food-type-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(8, 9, 11, 0.88);
+    backdrop-filter: blur(6px);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.5px;
+}
+
+.food-type-badge.veg { color: var(--nu-veg); border: 1px solid rgba(0, 229, 153, 0.4); }
+.food-type-badge.non-veg { color: var(--nu-non-veg); border: 1px solid rgba(255, 77, 79, 0.4); }
+
+.food-offer-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 229, 153, 0.3);
+}
+
+.food-card-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.food-card-title {
+    color: var(--nu-white);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.food-card-title:hover { color: var(--nu-accent); }
+
+.food-rating-pill {
+    background: rgba(255, 184, 0, 0.12);
+    border: 1px solid rgba(255, 184, 0, 0.3);
+    color: var(--nu-warning);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.food-nutrition-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--nu-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.food-nutrition-pill strong {
+    color: var(--nu-white);
+}
+
+.food-card-desc {
+    font-size: 12px;
+    color: var(--nu-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.food-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--nu-border);
+}
+
+.food-price-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.food-price-currency {
+    color: var(--nu-accent);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.food-price-amount {
+    color: var(--nu-white);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.food-add-btn {
+    background: var(--nu-accent-dim);
+    color: var(--nu-accent);
+    border: 1px solid var(--nu-accent);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+}
+
+.food-add-btn:hover {
+    background: var(--nu-accent);
+    color: var(--nu-black);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 229, 153, 0.3);
+}
+
+.nu-qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    background: var(--nu-surface-card);
+    border: 1px solid var(--nu-accent);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    background: transparent;
+    border: none;
+    color: var(--nu-accent);
+    font-size: 13px;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.qty-btn:hover {
+    background: var(--nu-accent);
+    color: var(--nu-black);
+}
+
+.qty-count {
+    color: var(--nu-white);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0 5px;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* ==================================================
+   13. Nutrition Details Modal & Grid
+   ================================================== */
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.nutrition-stat-card {
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+}
+
+.nutrition-stat-label {
+    font-size: 10px;
+    color: var(--nu-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.nutrition-stat-val {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--nu-white);
+}
+
+.nutrition-stat-val.accent {
+    color: var(--nu-accent);
+}
+
+.badge-spice-mild { background: rgba(0, 229, 153, 0.15); color: var(--nu-accent); border: 1px solid rgba(0, 229, 153, 0.3); }
+.badge-spice-medium { background: rgba(255, 184, 0, 0.15); color: var(--nu-warning); border: 1px solid rgba(255, 184, 0, 0.3); }
+.badge-spice-hot { background: rgba(255, 77, 79, 0.15); color: var(--nu-danger); border: 1px solid rgba(255, 77, 79, 0.3); }
+
+/* ==================================================
+   14. Cart Nutrition Engine & Breakdown UI
+   ================================================== */
+.cart-nutrition-box {
+    background: linear-gradient(135deg, rgba(0, 229, 153, 0.08) 0%, rgba(21, 23, 28, 0.9) 100%);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.cart-nutrition-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cart-nutrition-badge {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--nu-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cart-nutrition-pills {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--nu-white);
+    font-weight: 600;
+}
+
+.cart-nutrition-item {
+    background: rgba(8, 9, 11, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* ==================================================
+   15. Complete Your Meal Recommendation Shelf
+   ================================================== */
+.nu-complete-meal-section {
+    background: var(--nu-surface-card);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.nu-complete-meal-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+}
+
+.nu-complete-meal-track::-webkit-scrollbar { display: none; }
+
+.nu-addon-card {
+    flex: 0 0 160px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nu-addon-img {
+    width: 100%;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.nu-addon-title {
+    color: var(--nu-white);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.nu-addon-price {
+    color: var(--nu-accent);
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+/* ==================================================
+   16. NUOrder AI Assistant Modal & Chat Styles (Task 3.4 UI Fix B)
+   ================================================== */
+.nu-ai-dialog {
+    max-width: 680px;
+    margin: 1.75rem auto;
+}
+
+.nu-ai-modal-content {
+    max-height: 85vh;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+}
+
+.nu-ai-chat-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--nu-border) transparent;
+}
+
+.nu-ai-chat-body::-webkit-scrollbar { width: 5px; }
+.nu-ai-chat-body::-webkit-scrollbar-thumb { background: var(--nu-border); border-radius: 4px; }
+
+/* Chat Message Bubbles */
+.nu-ai-message {
+    display: flex;
+    gap: 10px;
+    animation: nuFadeInUp 0.25s var(--nu-ease-out);
+    max-width: 90%;
+}
+
+.nu-ai-message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.nu-ai-message.assistant {
+    align-self: flex-start;
+}
+
+.nu-ai-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.nu-ai-avatar.ai {
+    background: var(--nu-accent-dim);
+    color: var(--nu-accent);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+}
+
+.nu-ai-avatar.user-av {
+    background: var(--nu-surface-card);
+    color: var(--nu-text);
+    border: 1px solid var(--nu-border);
+}
+
+.nu-ai-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+
+.nu-ai-message.user .nu-ai-bubble {
+    background: var(--nu-surface-card);
+    color: var(--nu-white);
+    border: 1px solid var(--nu-border-light);
+    border-top-right-radius: 4px;
+}
+
+.nu-ai-message.assistant .nu-ai-bubble {
+    background: rgba(21, 23, 28, 0.95);
+    color: var(--nu-text);
+    border: 1px solid var(--nu-border);
+    border-top-left-radius: 4px;
+}
+
+.nu-ai-bubble strong {
+    color: var(--nu-white);
+}
+
+.nu-ai-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+/* Compact AI Recommendations Grid */
+.nu-ai-recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.nu-ai-rec-card {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform var(--nu-transition-fast), border-color var(--nu-transition-fast), box-shadow var(--nu-transition-fast);
+}
+
+.nu-ai-rec-card:hover {
+    border-color: rgba(0, 229, 153, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.nu-ai-rec-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 95px;
+    background: var(--nu-black);
+    overflow: hidden;
+}
+
+.nu-ai-rec-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.nu-ai-food-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(8, 9, 11, 0.88);
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.3px;
+}
+
+.nu-ai-food-badge.veg {
+    color: var(--nu-veg);
+    border: 1px solid rgba(0, 229, 153, 0.4);
+}
+
+.nu-ai-food-badge.non-veg {
+    color: var(--nu-non-veg);
+    border: 1px solid rgba(255, 77, 79, 0.4);
+}
+
+.nu-ai-rec-body {
+    padding: 8px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    gap: 4px;
+}
+
+.nu-ai-rec-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.nu-ai-rec-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nu-white);
+    margin: 0;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 170px;
+}
+
+.nu-ai-rec-rating {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--nu-warning);
+    background: rgba(255, 184, 0, 0.12);
+    border: 1px solid rgba(255, 184, 0, 0.3);
+    padding: 1px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.nu-ai-rec-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--nu-muted);
+    font-weight: 600;
+}
+
+.nu-ai-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.nu-ai-rec-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 2px;
+}
+
+.nu-ai-rec-price {
+    color: var(--nu-white);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.nu-ai-add-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+}
+
+/* Animated Thinking State */
+.nu-ai-thinking {
+    display: none;
+    align-self: flex-start;
+    align-items: center;
+    gap: 8px;
+    background: rgba(21, 23, 28, 0.8);
+    border: 1px solid var(--nu-border);
+    padding: 8px 14px;
+    border-radius: 12px;
+    color: var(--nu-accent);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.thinking-dots {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.thinking-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--nu-accent);
+    border-radius: 50%;
+    animation: nuPulse 1.2s infinite ease-in-out;
+}
+
+.thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes nuPulse {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* AI Quick Prompt Chips (Pinned bottom row) */
+.nu-ai-quick-prompts {
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 20px;
+    border-top: 1px solid var(--nu-border);
+    background: var(--nu-surface);
+    scrollbar-width: none;
+    white-space: nowrap;
+}
+
+.nu-ai-quick-prompts::-webkit-scrollbar { display: none; }
+
+.nu-ai-prompt-btn {
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-muted);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-ai-prompt-btn:hover {
+    color: var(--nu-accent);
+    border-color: var(--nu-accent);
+    background: var(--nu-accent-dim);
+    transform: translateY(-1px);
+}
+
+/* AI Input Footer (Pinned bottom) */
+.nu-ai-chat-footer {
+    flex-shrink: 0;
+    padding: 10px 20px 14px;
+    border-top: 1px solid var(--nu-border);
+    background: var(--nu-surface);
+}
+
+.nu-ai-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nu-ai-input-group .form-control-nu {
+    height: 42px;
+    font-size: 13px;
+    border-radius: 999px;
+    padding-left: 16px;
+    background: var(--nu-charcoal);
+}
+
+#nuAISendBtn {
+    height: 42px;
+    width: 44px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ==================================================
+   17. Other Sections & Modals
+   ================================================== */
+.nu-popular-section {
+    background: var(--nu-black);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 48px 0;
+}
+
+.nu-offers-section {
+    background: var(--nu-charcoal);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 48px 0;
+}
+
+.nu-deal-card {
+    background: linear-gradient(135deg, var(--nu-surface) 0%, var(--nu-surface-card) 100%);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    padding: 22px;
+    height: 100%;
+    transition: transform var(--nu-transition-fast);
+}
+
+.nu-deal-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--nu-accent);
+}
+
+.nu-deal-discount {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--nu-accent);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.nu-ai-section {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 229, 153, 0.08) 0%, var(--nu-black) 80%);
+    border-bottom: 1px solid var(--nu-border);
+    padding: 56px 0;
+}
+
+.nu-ai-card {
+    background: rgba(21, 23, 28, 0.85);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--nu-border);
+    border-radius: 16px;
+    padding: 26px;
+    height: 100%;
+    transition: all var(--nu-transition-normal);
+}
+
+.nu-ai-card:hover {
+    border-color: var(--nu-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+}
+
+.nu-ai-icon-wrap {
+    width: 48px;
+    height: 48px;
+    background: var(--nu-accent-dim);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nu-accent);
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.wcu-section {
+    background-color: var(--nu-surface);
+    border-bottom: 1px solid var(--nu-border);
+}
+
+.wcu-card {
+    text-align: left;
+    background-color: var(--nu-surface-card);
+    border: 1px solid var(--nu-border);
+    border-radius: var(--nu-radius-lg);
+    transition: transform 0.28s var(--nu-ease-spring), border-color 0.28s ease, box-shadow 0.28s ease;
+    height: 100%;
+}
+
+.wcu-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--nu-border-hover);
+    box-shadow: var(--nu-shadow-md);
+}
+
+.wcu-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: var(--nu-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.wcu-card:hover .wcu-icon-wrapper {
+    transform: scale(1.08);
+    border-color: rgba(0, 229, 153, 0.4);
+}
+
+.wcu-card-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.wcu-card-title {
+    color: var(--nu-white);
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.wcu-card-description {
+    color: var(--nu-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.offers { color: var(--nu-accent); font-weight: 700; }
+
+.delivery-and-payment-section {
+    background-color: var(--nu-bg);
+    border-bottom: 1px solid var(--nu-border);
+}
+
+.healthy-food-section-img {
+    max-width: 100%;
+    width: 320px;
+    height: auto;
+    border-radius: 14px;
+}
+
+/* ==================================================
+   10. Checkout Flow & Payment Methods Block (Task 3.7)
+   ================================================== */
+.nu-savings-corner-box,
+.nu-delivery-options-box {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: var(--nu-radius-md);
+    padding: 12px 14px;
+}
+
+.nu-savings-title,
+.nu-checkout-subhead {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--nu-muted);
+}
+
+.nu-available-offer-row {
+    background: var(--nu-surface-card);
+    border: 1px dashed var(--nu-border);
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-available-offer-row:hover {
+    border-color: var(--nu-accent);
+    background: var(--nu-accent-dim);
+}
+
+.nu-checkout-payment-box {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: var(--nu-radius-md);
+    padding: 12px 14px;
+}
+
+.nu-checkout-payment-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--nu-muted);
+}
+
+.nu-checkout-secure-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--nu-accent);
+}
+
+.nu-checkout-payment-tiles {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nu-payment-tile {
+    flex: 1 1 calc(25% - 8px);
+    min-width: 58px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nu-payment-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 229, 153, 0.25);
+}
+
+.nu-payment-tile-img {
+    max-width: 100%;
+    max-height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
+/* ==================================================
+   11. Studio Minimal 3-Column Footer (Task 3.8 / Task 3.9 FIX B)
+   ================================================== */
+.nu-footer {
+    background-color: var(--nu-bg);
+    padding: 60px 0 28px;
+    border-top: 1px solid var(--nu-border);
+}
+
+.nu-footer-divider {
+    height: 1px;
+    background: var(--nu-border);
+    width: 100%;
+}
+
+.nu-footer-tagline {
+    color: var(--nu-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nu-footer-col-header {
+    color: var(--nu-muted);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+.nu-footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nu-footer-links-list li {
+    margin-bottom: 10px;
+}
+
+.nu-footer-links-list li a {
+    color: var(--nu-text);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none !important;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.nu-footer-links-list li a:hover {
+    color: var(--nu-accent);
+    transform: translateX(3px);
+}
+
+.nu-footer-email-link {
+    color: var(--nu-accent);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+}
+
+.nu-footer-email-link:hover {
+    color: var(--nu-accent-hover);
+    text-decoration: underline !important;
+}
+
+.nu-footer-social-circle {
+    width: 42px;
+    height: 42px;
+    background-color: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--nu-text);
+    font-size: 17px;
+    line-height: 1;
+    transition: all var(--nu-transition-fast);
+    text-decoration: none !important;
+}
+
+.nu-footer-social-circle:hover {
+    border-color: var(--nu-accent);
+    background-color: var(--nu-accent-dim);
+    color: var(--nu-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 229, 153, 0.25);
+}
+
+.nu-footer-copyright {
+    color: var(--nu-muted);
+    font-size: 13px;
+}
+
+/* Persistent Feedback Tab */
+.nu-feedback-tab {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--nu-surface);
+    color: var(--nu-white);
+    border: 1px solid var(--nu-border);
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 1040;
+    transition: all var(--nu-transition-fast);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nu-feedback-tab:hover {
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    background: var(--nu-surface-hover);
+    padding-left: 14px;
+    box-shadow: -6px 0 24px rgba(0, 229, 153, 0.25);
+}
+
+.nu-feedback-icon { color: var(--nu-accent); font-size: 14px; }
+.nu-feedback-text { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); }
+
+.nu-rating-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.nu-rating-chip-btn {
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--nu-transition-fast);
+}
+
+.nu-rating-chip-btn.selected {
+    background: var(--nu-accent-dim);
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    font-weight: 700;
+}
+
+/* Modals */
+.modal-content-nu {
+    background-color: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 16px;
+    color: var(--nu-text);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+}
+
+.modal-header-nu { border-bottom: 1px solid var(--nu-border); padding: 18px 24px; }
+.modal-body-nu { padding: 24px; }
+.modal-footer-nu { border-top: 1px solid var(--nu-border); padding: 16px 24px; }
+
+/* Location Modal & City Cards (Task 3.4 Fix) */
+#locationCitiesList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.nu-city-card,
+.location-option-card {
+    background: #15171C;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    padding: 16px 18px;
+    min-height: 105px;
+    color: #E8EAF0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.nu-city-card:hover,
+.location-option-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 229, 153, 0.45);
+    box-shadow: 0 8px 25px rgba(0, 229, 153, 0.15);
+    color: #FFFFFF;
+}
+
+.nu-city-card.selected-location,
+.nu-city-card.active,
+.location-option-card.selected-location {
+    border: 1px solid rgba(0, 229, 153, 0.55);
+    background: rgba(0, 229, 153, 0.06);
+}
+
+.nu-city-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--nu-white);
+    margin-bottom: 2px;
+}
+
+.nu-city-sub {
+    font-size: 12px;
+    color: var(--nu-muted);
+}
+
+.nu-city-active-tag {
+    color: var(--nu-accent);
+    background: var(--nu-accent-dim);
+    border: 1px solid rgba(0, 229, 153, 0.35);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    margin-top: 8px;
+}
+
+/* Saved Demo Addresses Grid */
+.nu-saved-address-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.nu-saved-address-card {
+    background: #15171C;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+}
+
+.nu-saved-address-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 229, 153, 0.45);
+    box-shadow: 0 6px 20px rgba(0, 229, 153, 0.12);
+}
+
+.nu-saved-address-icon {
+    font-size: 18px;
+    color: var(--nu-accent);
+    margin-top: 2px;
+}
+
+/* NUOrder Modal Close Button */
+.nu-modal-close-btn,
+.modal-footer .btn-secondary {
+    background: #15171C !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #E8EAF0 !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+    appearance: none !important;
+    box-shadow: none !important;
+}
+
+.nu-modal-close-btn:hover,
+.modal-footer .btn-secondary:hover {
+    border-color: var(--nu-accent) !important;
+    color: var(--nu-accent) !important;
+    background: var(--nu-surface-hover) !important;
+    box-shadow: 0 0 14px rgba(0, 229, 153, 0.2) !important;
+}
+
+/* Task 4.7C Fix 4: High-Contrast Accessible Modal Close X Button */
+.modal-header .close,
+.nu-modal-close-x {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    opacity: 0.95 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    margin: -6px -6px -6px auto !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    text-shadow: none !important;
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus,
+.nu-modal-close-x:hover,
+.nu-modal-close-x:focus {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: var(--nu-accent, #00E599) !important;
+    border-color: var(--nu-accent, #00E599) !important;
+    opacity: 1 !important;
+    transform: scale(1.06);
+    box-shadow: 0 0 12px rgba(0, 229, 153, 0.35) !important;
+    text-decoration: none !important;
+}
+
+.modal-header .close span {
+    display: block;
+    line-height: 1;
+    color: inherit;
+}
+
+/* Auth Modal & Flow (Task 3.5) */
+.nu-auth-dialog {
+    max-width: 440px;
+}
+
+.nu-auth-modal-content {
+    border-radius: 18px;
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+}
+
+.nu-auth-icon-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--nu-accent-dim);
+    color: var(--nu-accent);
+    border: 1px solid rgba(0, 229, 153, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin: 0 auto;
+}
+
+.auth-step-panel {
+    animation: nuFadeInUp 0.3s var(--nu-ease-out);
+}
+
+.otp-digit {
+    background: var(--nu-charcoal) !important;
+    border: 1px solid var(--nu-border) !important;
+    color: var(--nu-white) !important;
+    border-radius: 10px !important;
+    transition: all 0.15s ease;
+}
+
+.otp-digit:focus {
+    border-color: var(--nu-accent) !important;
+    box-shadow: 0 0 0 2px var(--nu-accent-dim) !important;
+    background: var(--nu-black) !important;
+}
+
+.nu-geo-btn {
+    background: var(--nu-charcoal) !important;
+    border: 1px solid rgba(0, 229, 153, 0.4) !important;
+    color: var(--nu-white) !important;
+    border-radius: 10px !important;
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.nu-geo-btn:hover {
+    background: var(--nu-accent-dim) !important;
+    border-color: var(--nu-accent) !important;
+    color: var(--nu-accent) !important;
+    box-shadow: 0 0 14px rgba(0, 229, 153, 0.2) !important;
+}
+
+.nu-address-tag-btn {
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-muted);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.nu-address-tag-btn:hover,
+.nu-address-tag-btn.active {
+    background: var(--nu-accent-dim);
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    font-weight: 700;
+}
+
+.nu-saved-address-card-full {
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.nu-saved-address-card-full:hover {
+    border-color: var(--nu-accent);
+    transform: translateY(-1px);
+}
+
+.form-control-nu {
+    background-color: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 10px 14px;
+    transition: border-color 0.2s ease;
+}
+
+.form-control-nu:focus {
+    background-color: var(--nu-charcoal);
+    border-color: var(--nu-accent);
+    color: var(--nu-white);
+    box-shadow: 0 0 0 2px var(--nu-accent-dim);
+    outline: none;
+}
+
+.form-control-nu::placeholder { color: var(--nu-muted); }
+
+.form-control-nu[readonly],
+.form-control-nu:disabled,
+#nuCouponInput[readonly] {
+    background-color: #f8fafc !important;
+    border: 1px solid #10b981 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    opacity: 1 !important;
+    cursor: default;
+}
+
+.form-control-nu[readonly]:focus,
+#nuCouponInput[readonly]:focus {
+    background-color: #f8fafc !important;
+    border-color: #10b981 !important;
+    color: #0f172a !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+    outline: none;
+}
+
+.form-label-nu { font-size: 13px; font-weight: 600; color: var(--nu-text); margin-bottom: 6px; }
+
+.food-details-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--nu-border);
+}
+
+.nu-chip {
+    display: inline-block;
+    background: var(--nu-charcoal);
+    border: 1px solid var(--nu-border);
+    color: var(--nu-text);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin: 2px 4px 2px 0;
+}
+
+.nu-tag-pill {
+    display: inline-block;
+    color: var(--nu-accent);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+}
+
+/* Animations */
+@keyframes nuFadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+    animation: nuFadeInUp 0.45s var(--nu-ease-out) forwards;
+}
+
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 60ms; }
+.stagger-3 { animation-delay: 120ms; }
+.stagger-4 { animation-delay: 180ms; }
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==================================================
+   18. Responsive Layouts & Breakpoints
+   ================================================== */
+@media (max-width: 991.98px) {
+    .nu-nav-center { margin: 12px 0; align-items: flex-start; }
+    .nu-navbar .navbar-nav { width: 100%; }
+    .nu-navbar .navbar-nav .nav-link { padding: 10px 14px; width: 100%; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+    .nu-search-wrapper { display: none; }
+    .nu-location-btn { width: 100%; margin-top: 8px; justify-content: flex-start; }
+    .nu-hero-visual-card { margin-top: 26px; }
+    .nu-hero-badge-1 { left: 10px; }
+    .nu-hero-badge-2 { right: 10px; }
+
+    .nu-discovery-toolbar {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .nu-toolbar-search {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .nu-filter-pills-track {
+        flex: 1 1 100%;
+        order: 2;
+    }
+    .nu-toolbar-sort {
+        order: 3;
+        margin-left: auto;
+    }
+
+    #locationCitiesList {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body {
+        padding-top: 70px;
+        padding-bottom: 84px;
+    }
+
+    .nu-bottom-nav { display: flex; }
+
+    /* Mobile Floating Cart Bar */
+    .nu-floating-cart-bar {
+        left: 12px;
+        right: 12px;
+        bottom: 76px;
+        width: auto;
+        height: 52px;
+        border-radius: 14px;
+        padding: 8px 16px;
+    }
+
+    .nu-feedback-tab {
+        top: auto;
+        bottom: 136px;
+        right: 16px;
+        transform: none;
+        border-radius: 30px;
+        border: 1px solid var(--nu-border);
+        padding: 8px 14px;
+        flex-direction: row;
+        gap: 6px;
+        background: rgba(21, 23, 28, 0.96);
+        backdrop-filter: blur(10px);
+    }
+
+    .nu-feedback-text { writing-mode: horizontal-tb; transform: none; }
+
+    .nu-hero-section { min-height: auto; padding: 32px 0 40px; }
+    .nu-hero-stats { gap: 12px; }
+    .nu-hero-floating-badge { display: none; }
+
+    /* Mobile Horizontal Category Scroll Track */
+    #exploreMenuCategoryGrid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 12px;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        scrollbar-width: thin;
+        scrollbar-color: var(--nu-accent-dim) transparent;
+    }
+
+    #exploreMenuCategoryGrid::-webkit-scrollbar { height: 4px; }
+    #exploreMenuCategoryGrid::-webkit-scrollbar-thumb { background: var(--nu-accent); border-radius: 4px; }
+
+    #exploreMenuCategoryGrid > div {
+        flex: 0 0 200px !important;
+        max-width: 200px !important;
+        scroll-snap-align: start;
+        margin-bottom: 0 !important;
+    }
+
+    #exploreMenuCategoryGrid .menu-item-image { height: 120px; }
+    #exploreMenuCategoryGrid .menu-card-title { font-size: 15px; }
+    #exploreMenuCategoryGrid .category-card-desc { display: none; }
+
+    /* Mobile 1-Column Restaurant Card: Left Image + Right Info */
+    #categoryRestaurantsGrid > div,
+    #nearbyRestaurantsGrid > div {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .nu-restaurant-card {
+        flex-direction: row !important;
+        align-items: stretch;
+    }
+
+    .restaurant-img-wrap {
+        width: 125px !important;
+        min-width: 125px !important;
+        height: auto !important;
+        min-height: 125px !important;
+        border-radius: 12px 0 0 12px;
+    }
+
+    .nu-status-badge {
+        top: 6px;
+        left: 6px;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .restaurant-offer-tag {
+        bottom: 6px;
+        left: 6px;
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+
+    .restaurant-body {
+        padding: 10px 12px;
+        flex: 1;
+    }
+
+    .restaurant-title {
+        font-size: 15px;
+    }
+
+    .restaurant-cuisine {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .restaurant-meta {
+        padding: 6px 0;
+        margin-bottom: 8px;
+        font-size: 11px;
+    }
+
+    .restaurant-body .custom-button,
+    .restaurant-body .custom-outline-button {
+        padding: 6px 12px;
+        font-size: 12px;
+        height: auto;
+    }
+
+    /* Mobile 2-Column Food Grid */
+    #restaurantFoodGrid > div,
+    #popularDishesGrid > div {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding-left: 4px;
+        padding-right: 4px;
+        margin-bottom: 12px !important;
+    }
+
+    #restaurantFoodGrid .food-card-img-container,
+    #popularDishesGrid .food-card-img-container {
+        height: 120px;
+    }
+
+    #restaurantFoodGrid .food-card-body,
+    #popularDishesGrid .food-card-body {
+        padding: 10px;
+    }
+
+    #restaurantFoodGrid .food-card-title,
+    #popularDishesGrid .food-card-title {
+        font-size: 13px;
+    }
+
+    #restaurantFoodGrid .food-card-desc,
+    #popularDishesGrid .food-card-desc {
+        display: none;
+    }
+
+    #restaurantFoodGrid .food-nutrition-pill,
+    #popularDishesGrid .food-nutrition-pill {
+        font-size: 10px;
+        padding: 2px 5px;
+        margin-bottom: 4px;
+    }
+
+    #restaurantFoodGrid .food-price-amount,
+    #popularDishesGrid .food-price-amount {
+        font-size: 15px;
+    }
+
+    #restaurantFoodGrid .food-add-btn,
+    #popularDishesGrid .food-add-btn {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Mobile AI Full-Height Modal */
+    .nu-ai-modal-content {
+        height: 92vh !important;
+        max-height: 92vh !important;
+    }
+    .nu-ai-chat-body {
+        padding: 12px 14px;
+        gap: 12px;
+    }
+    .nu-ai-recommendations-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+    .nu-ai-rec-img-wrap {
+        height: 85px !important;
+    }
+    .nu-ai-quick-prompts {
+        padding: 8px 12px !important;
+        gap: 6px !important;
+    }
+    .nu-ai-chat-footer {
+        padding: 8px 12px 12px !important;
+    }
+
+    /* Mobile Location Modal Grid */
+    #locationCitiesList {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .nu-saved-address-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+
+/* ==================================================
+   17. Task 4.1 Order Status Timeline & Tracking Styles
+   ================================================== */
+.nu-order-timeline {
+    position: relative;
+    padding-left: 28px;
+    margin: 16px 0;
+}
+
+.nu-order-timeline::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 11px;
+    width: 2px;
+    background: var(--nu-border);
+}
+
+.nu-timeline-step {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.nu-timeline-step:last-child {
+    margin-bottom: 0;
+}
+
+.nu-timeline-icon {
+    position: absolute;
+    left: -28px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--nu-surface-card);
+    border: 2px solid var(--nu-border);
+    color: var(--nu-text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.nu-timeline-step.completed .nu-timeline-icon {
+    background: var(--nu-accent);
+    border-color: var(--nu-accent);
+    color: #000;
+}
+
+.nu-timeline-step.active .nu-timeline-icon {
+    background: var(--nu-accent-dim);
+    border-color: var(--nu-accent);
+    color: var(--nu-accent);
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
+    animation: nuPulse 1.8s infinite;
+}
+
+.nu-timeline-content {
+    padding-left: 6px;
+}
+
+.nu-timeline-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--nu-white);
+    margin-bottom: 2px;
+}
+
+.nu-timeline-desc {
+    font-size: 12px;
+    color: var(--nu-text-dim);
+    margin-bottom: 0;
+}
+
+.nu-timeline-time {
+    font-size: 11px;
+    color: var(--nu-accent);
+    font-family: var(--nu-font-mono, monospace);
+    margin-top: 2px;
+}
+
+@keyframes nuPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(0, 230, 118, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+}
+
+/* Skeleton Loading Animation */
+.nu-skeleton {
+    background: linear-gradient(90deg, var(--nu-surface-card) 25%, var(--nu-charcoal) 50%, var(--nu-surface-card) 75%);
+    background-size: 200% 100%;
+    animation: nuSkeletonLoading 1.5s infinite;
+    border-radius: 6px;
+}
+
+@keyframes nuSkeletonLoading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ==================================================
+   FLOATING RIGHT-SIDE AI COPILOT BUTTON (Task 4.6A FIX B)
+   ================================================== */
+#nuFloatingAiContainer,
+.nu-floating-ai-wrap {
+    position: fixed !important;
+    right: 24px !important;
+    bottom: 100px !important;
+    z-index: 99999 !important;
+    align-items: center !important;
+    flex-direction: row-reverse !important;
+    gap: 8px !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 767.98px) {
+    #nuFloatingAiContainer,
+    .nu-floating-ai-wrap {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    #nuFloatingAiContainer,
+    .nu-floating-ai-wrap {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+#nuFloatingAiBtn,
+.nu-floating-ai-btn {
+    position: relative !important;
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 50% !important;
+    background: #0f172a !important;
+    border: 2px solid var(--nu-accent, #00E599) !important;
+    color: var(--nu-accent, #00E599) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 22px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45) !important;
+    transition: all 0.25s ease !important;
+    backdrop-filter: blur(8px) !important;
+    outline: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#nuFloatingAiBtn:hover,
+#nuFloatingAiBtn:focus,
+.nu-floating-ai-btn:hover,
+.nu-floating-ai-btn:focus {
+    transform: scale(1.08) !important;
+    box-shadow: 0 6px 26px rgba(16, 185, 129, 0.65) !important;
+    background: #1e293b !important;
+    color: #ffffff !important;
+}
+
+.nu-ai-spark-icon {
+    font-size: 22px !important;
+    color: var(--nu-accent, #10b981) !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#nuFloatingAiBtn:hover .nu-ai-spark-icon,
+#nuFloatingAiBtn:focus .nu-ai-spark-icon {
+    color: #ffffff !important;
+}
+
+.nu-ai-pulse-ring {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 1.5px solid var(--nu-accent, #10b981);
+    opacity: 0.5;
+    animation: nuAiPulse 3s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    pointer-events: none;
+}
+
+@keyframes nuAiPulse {
+    0% { transform: scale(0.96); opacity: 0.7; }
+    50% { transform: scale(1.16); opacity: 0.15; }
+    100% { transform: scale(0.96); opacity: 0.7; }
+}
+
+.nu-ai-tooltip {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid var(--nu-border, rgba(255, 255, 255, 0.12));
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    white-space: nowrap;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.nu-floating-ai-wrap:hover .nu-ai-tooltip,
+.nu-floating-ai-btn:focus ~ .nu-ai-tooltip,
+.nu-floating-ai-wrap:focus-within .nu-ai-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==================================================
+   Task 5B: Right-Side Floating AI Chat Panel (eVote Pattern)
+   ================================================== */
+#nuAIAssistantModal {
+    padding-right: 0 !important;
+    overflow: hidden !important;
+}
+
+#nuAIAssistantModal.show + .modal-backdrop,
+#nuAIAssistantModal ~ .modal-backdrop {
+    opacity: 0.15 !important;
+}
+
+#nuAIAssistantModal .modal-dialog {
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 20px !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    width: 410px !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 640px !important;
+    max-height: calc(100vh - 40px) !important;
+    z-index: 100005 !important;
+    transform: none !important;
+}
+
+#nuAIAssistantModal .modal-content {
+    background: #0f172a !important;
+    border: 1px solid rgba(0, 229, 153, 0.35) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 229, 153, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+}
+
+#nuAIAssistantModal .modal-header {
+    background: #0f172a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 14px 18px !important;
+    flex-shrink: 0 !important;
+}
+
+#nuAIAssistantModal .modal-body {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 16px !important;
+    background: #0f172a !important;
+}
+
+#nuAIAssistantModal .nu-ai-quick-prompts {
+    flex-shrink: 0 !important;
+    background: #0f172a !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding: 10px 14px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    max-height: 140px !important;
+    overflow-y: auto !important;
+}
+
+#nuAIAssistantModal .modal-footer {
+    flex-shrink: 0 !important;
+    background: #0f172a !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 10px 14px !important;
+}
+
+@media (max-width: 767.98px) {
+    #nuFloatingAiContainer,
+    .nu-floating-ai-wrap {
+        display: none !important;
+    }
+
+    .nu-feedback-tab {
+        right: 14px !important;
+        bottom: 78px !important;
+        top: auto !important;
+        transform: none !important;
+        border-radius: 20px !important;
+        padding: 6px 14px !important;
+        flex-direction: row !important;
+        z-index: 1030 !important;
+    }
+
+    .nu-feedback-text {
+        writing-mode: horizontal-tb !important;
+        transform: none !important;
+        font-size: 11px !important;
+    }
+
+    #nuAIAssistantModal .modal-dialog {
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 70px !important;
+        top: auto !important;
+        margin: 0 !important;
+        width: auto !important;
+        max-width: calc(100vw - 16px) !important;
+        height: calc(100vh - 85px) !important;
+        max-height: 85vh !important;
+    }
+}
+
+/* ==================================================
+   DARK STUDIO PAYMENT METHODS UI (Task 4.5)
+   ================================================== */
+.nu-payment-section {
+    background: var(--nu-surface-card, #0f172a);
+    border: 1px solid var(--nu-border, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.nu-payment-cat-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: var(--nu-text-dim, #94a3b8);
+    text-transform: uppercase;
+}
+
+.nu-payment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+@media (min-width: 576px) {
+    .nu-payment-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.nu-payment-tile-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.nu-payment-tile-card:hover {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: #1e293b;
+}
+
+.nu-payment-tile-card.selected {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1.5px solid #10b981 !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+.nu-payment-tile-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nu-payment-check {
+    font-size: 12px;
+    color: #10b981;
+    font-weight: 700;
+}
+
+/* ==================================================
+   PHASE 4.7D MOBILE & TABLET RESPONSIVE UX REDESIGN
+   ================================================== */
+
+/* Mobile Base & Small Screens (max-width: 767.98px) */
+@media (max-width: 767.98px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        padding-bottom: 80px !important;
+    }
+
+    /* Mobile Navbar Header */
+    .navbar.navbar-expand-lg {
+        padding: 8px 14px !important;
+        min-height: 56px !important;
+    }
+
+    .navbar-nav:not(.nu-bottom-nav) {
+        display: none !important;
+    }
+
+    /* Mobile Bottom Navigation */
+    /* Mobile Bottom Navigation */
+    .nu-bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        height: 60px !important;
+        background: #0f172a !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        z-index: 100000 !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .nu-bottom-nav-item {
+        flex: 1 1 0 !important;
+        width: 20% !important;
+        max-width: 20% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 3px 0 !important;
+        margin: 0 !important;
+        font-size: 9px !important;
+        color: #94a3b8 !important;
+        text-decoration: none !important;
+        overflow: hidden !important;
+        text-align: center !important;
+        position: relative !important;
+    }
+
+    .nu-bottom-nav-item.active,
+    .nu-bottom-nav-item:hover {
+        color: #00E599 !important;
+    }
+
+    .nu-bottom-nav-item i {
+        font-size: 15px !important;
+        margin-bottom: 1px !important;
+    }
+
+    .nu-bottom-nav-item span {
+        font-size: 8.5px !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+
+    /* Mobile Floating AI Launcher Hidden */
+    #nuFloatingAiContainer,
+    .nu-floating-ai-wrap {
+        display: none !important;
+    }
+
+    /* Mobile Feedback Button Positioning — above bottom nav */
+    .nu-feedback-tab {
+        position: fixed !important;
+        right: 12px !important;
+        bottom: 72px !important;
+        top: auto !important;
+        transform: none !important;
+        border-radius: 20px !important;
+        padding: 5px 10px !important;
+        flex-direction: row !important;
+        z-index: 10001 !important;
+        background: rgba(15, 23, 42, 0.95) !important;
+        border: 1px solid #00E599 !important;
+        gap: 4px !important;
+    }
+
+    .nu-feedback-text {
+        writing-mode: horizontal-tb !important;
+        transform: none !important;
+        font-size: 10px !important;
+    }
+
+    .nu-feedback-icon {
+        font-size: 12px !important;
+    }
+
+    /* Mobile AI Panel Dialog — compact, above bottom nav */
+    #nuAIAssistantModal .modal-dialog {
+        position: fixed !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 72px !important;
+        top: auto !important;
+        margin: 0 !important;
+        width: auto !important;
+        max-width: calc(100vw - 20px) !important;
+        height: min(500px, calc(100svh - 145px)) !important;
+        max-height: min(500px, calc(100svh - 145px)) !important;
+        z-index: 100005 !important;
+        border-radius: 18px !important;
+        transform: none !important;
+    }
+
+    /* Mobile Hero & Spacing Polish */
+    .nu-hero-section {
+        padding: 20px 0 24px !important;
+        min-height: auto !important;
+    }
+
+    .nu-hero-title {
+        font-size: 26px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 8px !important;
+    }
+
+    .nu-hero-subtitle {
+        font-size: 13px !important;
+        margin-bottom: 14px !important;
+    }
+
+    /* Mobile Food Grid Layout (2-Column Compact) */
+    .nu-food-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .nu-food-card {
+        padding: 10px !important;
+    }
+
+    .nu-food-card-img {
+        height: 110px !important;
+    }
+}
+
+/* Mobile Small (320px - 374px) */
+@media (max-width: 374.98px) {
+    .nu-food-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Even smaller nav items to fit 5 across 320px */
+    .nu-bottom-nav-item {
+        padding: 3px 0 !important;
+        font-size: 9px !important;
+    }
+
+    .nu-bottom-nav-item i {
+        font-size: 15px !important;
+        margin-bottom: 1px !important;
+    }
+
+    .nu-bottom-nav-item span {
+        font-size: 9px !important;
+    }
+}
+
+/* Tablet (768px - 1023.98px) */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    html, body {
+        overflow-x: hidden !important;
+    }
+
+    .nu-bottom-nav {
+        display: none !important;
+    }
+
+    #nuFloatingAiContainer {
+        display: flex !important;
+        position: fixed !important;
+        right: 20px !important;
+        bottom: 90px !important;
+        z-index: 99999 !important;
+    }
+
+    .nu-food-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+    }
+
+    #nuAIAssistantModal .modal-dialog {
+        position: fixed !important;
+        right: 20px !important;
+        bottom: 20px !important;
+        width: 390px !important;
+        height: 600px !important;
+        max-height: 80vh !important;
+        z-index: 100005 !important;
+    }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+    .nu-bottom-nav {
+        display: none !important;
+    }
+
+    #nuFloatingAiContainer {
+        display: flex !important;
+        position: fixed !important;
+        right: 24px !important;
+        bottom: 100px !important;
+        z-index: 99999 !important;
+    }
+}
+
+/* ==================================================
+   PHASE 4.7F — Final Mobile + Tablet UI Polish
+   ================================================== */
+
+/* ── FIX 3: Hero eyebrow badge & Page Overflow Prevention ── */
+@media (max-width: 767.98px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .container, .container-fluid {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .nu-hero-ambient-glow {
+        display: none !important;
+    }
+
+    .nu-section-eyebrow {
+        display: block !important;
+        width: fit-content !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        letter-spacing: 0.5px !important;
+        padding: 3px 10px !important;
+        max-width: calc(100vw - 32px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        line-height: 1.35 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ── FIX 5: Hero section compact — reduce empty space ── */
+    .nu-hero-section {
+        padding: 16px 0 20px !important;
+        min-height: auto !important;
+        overflow: hidden !important;
+    }
+
+    /* Hero visual card: reduce top margin gap on mobile */
+    .nu-hero-visual-card {
+        margin-top: 12px !important;
+        border-radius: 14px !important;
+        max-width: calc(100vw - 28px) !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hero heading uses class nu-hero-heading */
+    .nu-hero-heading {
+        font-size: 22px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 8px !important;
+        letter-spacing: -0.5px !important;
+        word-break: break-word !important;
+        max-width: calc(100vw - 28px) !important;
+    }
+
+    /* Hero caption uses class nu-hero-caption */
+    .nu-hero-caption {
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+        margin-bottom: 12px !important;
+        max-width: calc(100vw - 28px) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hero CTA button compact */
+    .nu-hero-cta {
+        padding: 8px 18px !important;
+        font-size: 13px !important;
+    }
+
+    /* Hero location tag compact */
+    .nu-hero-location-tag {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+        max-width: 100% !important;
+    }
+
+    /* ── FIX 6b: Feedback — ensure it never overlaps AI modal ── */
+    /* When AI modal is open, feedback will be underneath it (z-index is lower) */
+    /* Feedback already z-index: 10001, AI modal is 100005 — correct */
+
+    /* ── FIX: Search input min-width: 0 to prevent long placeholder min-content width overflow ── */
+    .nu-quick-search-input,
+    .nu-search-input,
+    .nu-quick-search-box,
+    input[type="text"],
+    input[type="search"] {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ── FIX 10: Search/filter overflow prevention ── */
+    .nu-discovery-toolbar {
+        overflow-x: hidden !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .nu-filter-pills-track {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        max-width: 100% !important;
+    }
+
+    .nu-filter-pills-track::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* Explore toolbar: ensure no overflow */
+    .nu-toolbar-search {
+        max-width: 100% !important;
+    }
+
+    /* Category grid items: ensure min-width doesn't exceed viewport */
+    #exploreMenuCategoryGrid > div {
+        flex: 0 0 180px !important;
+        max-width: 180px !important;
+    }
+
+    /* ── AI Modal header typography — compact on mobile ── */
+    #nuAIAssistantModal .modal-title {
+        font-size: 15px !important;
+    }
+
+    #nuAIAssistantModal .modal-header {
+        padding: 10px 14px !important;
+    }
+
+    #nuAIAssistantModal .modal-body {
+        padding: 12px !important;
+    }
+
+    #nuAIAssistantModal .modal-footer {
+        padding: 8px 12px !important;
+    }
+
+    /* AI quick chips compact */
+    #nuAIAssistantModal .nu-ai-quick-prompts {
+        padding: 8px 10px !important;
+        gap: 5px !important;
+        max-height: 100px !important;
+    }
+
+    #nuAIAssistantModal .nu-ai-chip,
+    #nuAIAssistantModal .quick-question-chip {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+    }
+
+    /* AI close button: always fully visible */
+    #nuAIAssistantModal .close,
+    #nuAIAssistantModal [data-dismiss="modal"] {
+        font-size: 20px !important;
+        padding: 4px 8px !important;
+        opacity: 1 !important;
+    }
+
+    /* ── FIX: Hero caption max-width override (inline style: max-width:500px causes overflow) ── */
+    .nu-hero-caption {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* ── FIX: Hero section must clip overflow (hero-section has overflow:hidden already) ── */
+    .nu-hero-section {
+        overflow: hidden !important;
+    }
+
+    /* ── Ensure inner hero columns don't exceed viewport ── */
+    .nu-hero-section .col-12 {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+
+    /* Section eyebrow: prevent inline-flex from overflowing */
+    .nu-section-eyebrow {
+        max-width: calc(100vw - 32px) !important;
+        overflow: hidden !important;
+    }
+}
+
+/* ── FIX 6: 320px — hide feedback to prevent extreme crowding ── */
+@media (max-width: 374.98px) {
+    .nu-feedback-tab {
+        display: none !important;
+    }
+
+    /* Hero heading even smaller */
+    .nu-hero-heading {
+        font-size: 24px !important;
+    }
+
+    .nu-hero-caption {
+        font-size: 12px !important;
+    }
+
+    .nu-section-eyebrow {
+        font-size: 9px !important;
+        padding: 2px 8px !important;
+    }
+}
+
+/* ── FIX 7 + 8: Tablet layout (768px–991px) ── */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Tablet hero: force 2-column layout (Bootstrap col-lg-6 needs 992px) */
+    #heroSection .col-12:first-child {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        text-align: left !important;
+    }
+
+    #heroSection .col-12:last-child {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    #heroSection .mx-auto.mx-lg-0 {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+
+    #heroSection .justify-content-center {
+        justify-content: flex-start !important;
+    }
+
+    #heroSection .text-center {
+        text-align: left !important;
+    }
+
+    /* Compact hero section padding on tablet — avoid huge empty space */
+    .nu-hero-section {
+        padding: 36px 0 40px !important;
+        min-height: auto !important;
+        align-items: flex-start !important;
+    }
+
+    /* Hero heading size for tablet */
+    .nu-hero-heading {
+        font-size: 38px !important;
+        line-height: 1.15 !important;
+    }
+
+    /* ── FIX 8: Tablet restaurant grid — 2-column ── */
+    #categoryRestaurantsGrid,
+    #nearbyRestaurantsGrid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+
+    #categoryRestaurantsGrid > div,
+    #nearbyRestaurantsGrid > div {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    /* Tablet: restore vertical restaurant card layout */
+    .nu-restaurant-card {
+        flex-direction: column !important;
+    }
+
+    .restaurant-img-wrap {
+        width: 100% !important;
+        min-width: unset !important;
+        height: 180px !important;
+        min-height: unset !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+}
+
+/* ── Tablet (768px–1023px) — already handled above, ensure no bottom nav ── */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    /* Feedback tab: use desktop vertical tab on tablet */
+    .nu-feedback-tab {
+        top: 50% !important;
+        bottom: auto !important;
+        right: 0 !important;
+        transform: translateY(-50%) !important;
+        border-radius: 8px 0 0 8px !important;
+        flex-direction: column !important;
+        padding: 12px 8px !important;
+        writing-mode: vertical-rl !important;
+        gap: 6px !important;
+    }
+
+    .nu-feedback-text {
+        writing-mode: vertical-rl !important;
+        transform: rotate(180deg) !important;
+        font-size: 11px !important;
+    }
+}
+
+/* ==================================================
+   PHASE 4.8 — CART → CHECKOUT FLOW STYLES
+   ================================================== */
+
+/* Checkout Card & Section Containers */
+.nu-checkout-address-box,
+.nu-checkout-summary-box,
+.nu-checkout-delivery-box,
+.nu-checkout-bill-card {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+}
+
+.nu-checkout-subhead {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--nu-accent);
+}
+
+.nu-checkout-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.nu-checkout-item-row:last-child {
+    border-bottom: none;
+}
+
+.nu-checkout-payment-placeholder-alert {
+    background: rgba(0, 229, 153, 0.12);
+    border: 1px solid rgba(0, 229, 153, 0.3);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    animation: nuFadeInUp 0.3s ease;
+}
+
+/* Mobile Checkout Modal Positioning (< 768px) */
+@media (max-width: 767.98px) {
+    #nuCheckoutModal .modal-dialog {
+        position: fixed !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 72px !important;
+        top: auto !important;
+        margin: 0 !important;
+        width: auto !important;
+        max-width: calc(100vw - 20px) !important;
+        height: min(560px, calc(100svh - 145px)) !important;
+        max-height: calc(100svh - 145px) !important;
+        z-index: 100005 !important;
+        border-radius: 18px !important;
+        transform: none !important;
+    }
+
+    #nuCheckoutModal .modal-content {
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    #nuCheckoutModal .modal-header {
+        padding: 10px 14px !important;
+        flex-shrink: 0 !important;
+    }
+
+    #nuCheckoutModal .modal-body {
+        flex: 1 1 auto !important;
+        padding: 12px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+}
+
+/* Tablet Checkout Modal Positioning (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    #nuCheckoutModal .modal-dialog {
+        max-width: 500px !important;
+        width: 500px !important;
+        margin: 1.75rem auto !important;
+    }
+}
+
+/* Desktop Checkout Modal Positioning (>= 1024px) */
+@media (min-width: 1024px) {
+    #nuCheckoutModal .modal-dialog {
+        max-width: 520px !important;
+        width: 520px !important;
+        margin: 1.75rem auto !important;
+    }
+}
+
+/* ==================================================
+   PHASE 4.9 — PAYMENT OPTIONS UI STYLES
+   ================================================== */
+
+/* Payment Selection Grid & Category Cards */
+.nu-payment-cat-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+@media (min-width: 576px) {
+    .nu-payment-cat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.nu-payment-cat-tile {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nu-payment-cat-tile:hover {
+    border-color: rgba(0, 229, 153, 0.4);
+    background: rgba(0, 229, 153, 0.04);
+}
+
+.nu-payment-cat-tile.selected {
+    border: 2px solid var(--nu-accent) !important;
+    background: rgba(0, 229, 153, 0.08) !important;
+}
+
+.nu-payment-cat-tile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nu-payment-cat-tile-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--nu-accent);
+}
+
+.nu-payment-cat-tile.selected .nu-payment-cat-tile-icon {
+    background: var(--nu-accent);
+    color: #0d1527;
+}
+
+.nu-payment-cat-tile-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--nu-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: transparent;
+}
+
+.nu-payment-cat-tile.selected .nu-payment-cat-tile-check {
+    background: var(--nu-accent);
+    border-color: var(--nu-accent);
+    color: #0d1527;
+    font-weight: bold;
+}
+
+/* Contextual Detail Box */
+.nu-payment-details-box {
+    background: var(--nu-surface);
+    border: 1px solid var(--nu-border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+    animation: nuFadeInUp 0.25s ease;
+}
+
+.nu-payment-security-badge {
+    background: rgba(0, 229, 153, 0.06);
+    border: 1px dashed rgba(0, 229, 153, 0.3);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: #cbd5e1;
+}
+
+.nu-payment-phase410-alert {
+    background: rgba(0, 229, 153, 0.12);
+    border: 1px solid rgba(0, 229, 153, 0.4);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    animation: nuFadeInUp 0.3s ease;
+}
+
+/* Mobile Payment Modal Positioning (< 768px) */
+@media (max-width: 767.98px) {
+    #nuPaymentModal .modal-dialog {
+        position: fixed !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 72px !important;
+        top: auto !important;
+        margin: 0 !important;
+        width: auto !important;
+        max-width: calc(100vw - 20px) !important;
+        height: min(580px, calc(100svh - 145px)) !important;
+        max-height: calc(100svh - 145px) !important;
+        z-index: 100005 !important;
+        border-radius: 18px !important;
+        transform: none !important;
+    }
+
+    #nuPaymentModal .modal-content {
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    #nuPaymentModal .modal-header {
+        padding: 10px 14px !important;
+        flex-shrink: 0 !important;
+    }
+
+    #nuPaymentModal .modal-body {
+        flex: 1 1 auto !important;
+        padding: 12px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+}
+
+/* Tablet Payment Modal Positioning (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    #nuPaymentModal .modal-dialog {
+        max-width: 500px !important;
+        width: 500px !important;
+        margin: 1.75rem auto !important;
+    }
+}
+
+/* Desktop Payment Modal Positioning (>= 1024px) */
+@media (min-width: 1024px) {
+    #nuPaymentModal .modal-dialog {
+        max-width: 520px !important;
+        width: 520px !important;
+        margin: 1.75rem auto !important;
+    }
 }

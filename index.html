@@ -1,331 +1,1588 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NUOrder is an AI-driven food platform for discovering, ordering, and tracking food with real-time nutrition intelligence.">
+    <title>NUOrder — AI-Driven Food Platform</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 4.5.2 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
+    <!-- FontAwesome Icons (CSS + Kit) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://kit.fontawesome.com/60acaf52d5.js" crossorigin="anonymous"></script>
+
+    <!-- NUOrder Custom Stylesheet -->
     <link rel="stylesheet" href="resta.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <!-- ==================================================
+         NAVBAR: Desktop & Mobile Header
+         ================================================== -->
+    <nav class="navbar navbar-expand-lg nu-navbar fixed-top" aria-label="Main Navigation">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/food-munch-img.png" class="food-munch-logo" />
+            <!-- Left: Brand Identity -->
+            <a class="navbar-brand nu-brand mr-lg-3" href="#" aria-label="NUOrder Homepage">
+                <span class="nu-brand-logo">NU</span>
+                <span class="nu-brand-text">NUOrder</span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- Mobile Action Buttons (Location, Search & Cart) -->
+            <div class="d-flex align-items-center d-lg-none ml-auto mr-2">
+                <button type="button" class="nu-nav-icon-btn mr-2" id="nuMobileLocEditBtn" data-toggle="modal" data-target="#nuLocationModal" aria-label="Change Location" title="Change Location">
+                    <i class="fas fa-map-marker-alt text-accent"></i>
+                </button>
+                <button type="button" class="nu-nav-icon-btn mr-2" data-toggle="modal" data-target="#nuSearchModal" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="nu-nav-icon-btn mr-2" data-toggle="modal" data-target="#nuCartModal" aria-label="View Shopping Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="nu-cart-badge">0</span>
+                </button>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nuNavbarCollapse" aria-controls="nuNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ml-auto">
-                    <a class="nav-link active" id="navItem1" href="#wcuSection">
-                        Why Choose Us?
-                        <span class="sr-only">(current)</span>
-                    </a>
-                    <a class="nav-link" href="#exploreMenuSection" id="navItem2">Explore Menu</a>
-                    <a class="nav-link" href="#deliveryPaymentSection" id="navItem3">Delivery & Payment</a>
-                    <a class="nav-link" href="#followUsSection" id="navItem4">Follow Us</a>
+
+            <!-- Collapsible Navigation & Controls -->
+            <div class="collapse navbar-collapse" id="nuNavbarCollapse">
+                <!-- Center: Navigation Links -->
+                <ul class="navbar-nav nu-nav-center" id="nuNavbarLinks">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#exploreMenuSection" data-section="categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#restaurantsSection" data-section="restaurants">Restaurants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#offersSection" data-section="offers">Offers</a>
+                    </li>
+                </ul>
+
+                <!-- Right: Controls -->
+                <div class="nu-nav-controls mt-3 mt-lg-0">
+                    <!-- Location Selector Button with Edit Badge -->
+                    <button type="button" class="nu-location-btn" id="nuNavLocationBtn" data-toggle="modal" data-target="#nuLocationModal" aria-label="Select delivery location" title="Click to Change Location">
+                        <i class="fas fa-map-marker-alt nu-location-icon"></i>
+                        <div>
+                            <span class="nu-location-label">Delivering to</span>
+                            <span class="nu-location-val">Hyderabad</span>
+                        </div>
+                        <span class="nu-location-edit-badge" title="Edit Location">
+                            <i class="fas fa-pencil-alt text-accent mr-1"></i>Edit
+                        </span>
+                    </button>
+
+                    <!-- Desktop Search Bar -->
+                    <div class="nu-search-wrapper d-none d-lg-block">
+                        <input type="text" class="nu-search-input" placeholder="Search food &amp; cuisines... (/)" aria-label="Search food and cuisines" />
+                        <i class="fas fa-search nu-search-icon"></i>
+                    </div>
+
+                    <!-- Desktop Cart Button -->
+                    <button type="button" class="nu-nav-icon-btn d-none d-lg-inline-flex" data-toggle="modal" data-target="#nuCartModal" aria-label="View Shopping Cart">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="nu-cart-badge">0</span>
+                    </button>
+
+                    <!-- Profile Dropdown -->
+                    <div class="dropdown">
+                        <button type="button" class="nu-nav-icon-btn" id="nuProfileDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="User Profile Menu">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-nu" id="nuProfileDropdownMenu" aria-labelledby="nuProfileDropdownBtn">
+                            <!-- Populated dynamically by renderProfileMenu() -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
-    <div class="banner-section-bg-container d-flex justify-content-center flex-column">
-        <div class="text-center">
-            <h1 class="banner-heading mb-3">Get Delicious Food Anytime</h1>
-            <p class="banner-caption mb-4">Eat Smart & Healthy</p>
-            <button class="custom-button">View Menu</button>
-            <button class="custom-outline-button">Order Now</button>
+
+    <!-- ==================================================
+         COMPACT FLOATING CART WIDGET (Desktop & Mobile)
+         ================================================== -->
+    <div class="nu-floating-cart-bar" id="nuFloatingCartBar" onclick="$('#nuCartModal').modal('show');" role="button" aria-label="Open shopping cart">
+        <div class="nu-floating-cart-info">
+            <i class="fas fa-shopping-bag"></i>
+            <span id="floatingCartText">1 item • ₹249</span>
+        </div>
+        <div class="nu-floating-cart-action">
+            <span>View Cart <i class="fas fa-arrow-right ml-1"></i></span>
         </div>
     </div>
-    <div class="wcu-section pt-5 pb-5" id="wcuSection">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="wcu-section-heading">Why Choose Us?</h1>
-                    <p class="wcu-section-description">
-                        We use both original recipes and classic versions of famous food
-                        items.
-                    </p>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="wcu-card p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/food-serve.png" class="wcu-card-image" />
-                        <h1 class="wcu-card-title mt-3">Food Service</h1>
-                        <p class="wcu-card-description">
-                            Experience fine dining at the comfort of your home. All our
-                            orders are carefully packed and arranged to give you the nothing
-                            less than perfect.
-                        </p>
+
+    <!-- ==================================================
+         MOBILE BOTTOM NAVIGATION
+         ================================================== -->
+    <nav class="nu-bottom-nav" aria-label="Mobile Bottom Navigation">
+        <a href="#" class="nu-bottom-nav-item active" id="bottomNavHome" data-nav="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#exploreMenuSection" class="nu-bottom-nav-item" id="bottomNavExplore" data-nav="explore">
+            <i class="fas fa-compass"></i>
+            <span>Explore</span>
+        </a>
+        <a href="javascript:void(0)" class="nu-bottom-nav-item" id="mobileNavAiBtn" onclick="event.preventDefault(); window.safeModalTransition(null, '#nuAIAssistantModal');" data-toggle="modal" data-target="#nuAIAssistantModal">
+            <i class="fas fa-brain text-accent"></i>
+            <span>AI</span>
+        </a>
+        <a href="#cart" class="nu-bottom-nav-item" id="bottomNavCart" data-nav="cart">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Cart</span>
+            <span class="nu-bottom-nav-badge" id="bottomNavCartBadge">0</span>
+        </a>
+        <a href="javascript:void(0)" class="nu-bottom-nav-item" id="bottomNavProfile" onclick="window.handleMobileProfileClick();">
+            <i class="fas fa-user"></i>
+            <span id="bottomNavProfileLabel">Profile</span>
+        </a>
+    </nav>
+
+    <!-- ==================================================
+         PERSISTENT FEEDBACK BUTTON
+         ================================================== -->
+    <button type="button" class="nu-feedback-tab" data-toggle="modal" data-target="#nuFeedbackModal" aria-label="Give NUOrder feedback">
+        <i class="fas fa-comment-dots nu-feedback-icon"></i>
+        <span class="nu-feedback-text">Feedback</span>
+    </button>
+
+    <!-- ==================================================
+         1. HERO SECTION: Studio Restaurant-Style Composition
+         ================================================== -->
+    <section class="nu-hero-section nu-reveal-up" id="heroSection" aria-label="Hero Banner">
+        <div class="nu-hero-ambient-glow" aria-hidden="true"></div>
+        <div class="container position-relative" style="z-index: 1;">
+            <div class="row align-items-center">
+                <!-- Left: Cinematic Typography & CTAs -->
+                <div class="col-12 col-lg-6 mb-5 mb-lg-0 text-center text-lg-left">
+                    <div class="nu-section-eyebrow mb-3">
+                        <i class="fas fa-bolt text-accent mr-1"></i> FOOD DISCOVERY &amp; NUTRITION INTELLIGENCE
                     </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="wcu-card p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/fruits-img.png" class="wcu-card-image" />
-                        <h1 class="wcu-card-title mt-3">Fresh Food</h1>
-                        <p class="wcu-card-description">
-                            The Fresh Food group provides fresh-cut fruits and vegetables
-                            directly picked from our partner farms and farm houses so that
-                            you always get them tree to plate.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="wcu-card p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/offers-img.png" class="wcu-card-image" />
-                        <h1 class="wcu-card-title mt-3">Best Offers</h1>
-                        <p class="wcu-card-description">
-                            Food Coupons & Offers upto
-                            <span class="offers">50% OFF</span>
-                            and Exclusive Promo Codes on All Online Food Orders.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="explore-menu-section pt-5 pb-5" id="exploreMenuSection">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="menu-section-heading">Explore menu</h1>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="shadow menu-item-card p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-ginger-fried-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Non-Veg Starters</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right-short" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="shadow menu-item-card p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-veg-starters-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Veg Starters</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-soup-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Soups</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-grilled-seafood-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Fish & Sea food</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-hyderabadi-biryani-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Main Course</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-mushroom-noodles-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Noodles</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-gluten-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Salads</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="menu-item-card shadow p-3 mb-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/em-coffee-bourbon-img.png" class="menu-item-image w-100" />
-                        <h1 class="menu-card-title">Desserts</h1>
-                        <a href="" class="menu-item-link">
-                            View All
-                            <svg width="16px" height="16px" viewBox="0 0 16 16" class="bi bi-arrow-right" fill="#d0b200" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="healthy-food-section pt-5 pb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-5">
-                    <div class="text-center">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/healthy-food-plate-img.png" class="healthy-food-section-img" />
-                    </div>
-                </div>
-                <div class="col-12 col-md-7">
-                    <h1 class="healthy-food-section-heading">
-                        Fresh, Healthy, Organic, Delicious Fruits
+                    <h1 class="nu-hero-heading mb-3">
+                        Good Food.<br/>Smarter Choices.
                     </h1>
-                    <p class="healthy-food-section-description">
-                        Say no to harmful chemicals and go fully organic with our range of
-                        fresh fruits and veggies. Pamper your body and your senses with
-                        the true and unadulterated gifts from mother nature. with the true
-                        and unadulterated gifts from mother nature.
+                    <p class="nu-hero-caption mb-4 mx-auto mx-lg-0" style="max-width: 500px;">
+                        Discover dishes from trusted local kitchens, personalized to your taste, budget, and nutrition goals.
                     </p>
-                    <button class="custom-button">Watch Video</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="delivery-and-payment-section pt-5 pb-5" id="deliveryPaymentSection">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-5 order-1 order-md-2">
-                    <div class="text-center">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/delivery-payment-section-img.png" class="delivery-and-payment-section-img" />
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start flex-wrap gap-3 mb-4">
+                        <a href="#exploreMenuSection" class="custom-button nu-hero-cta">
+                            Explore Food <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- Visually Subtle Location Tag -->
+                    <div class="nu-hero-location-tag d-inline-flex align-items-center" data-toggle="modal" data-target="#nuLocationModal" role="button" aria-label="Select delivery location">
+                        <i class="fas fa-map-marker-alt text-accent mr-2"></i>
+                        <span>Delivering near you in <strong class="nu-location-val text-white">Hyderabad</strong></span>
+                        <span class="text-muted small ml-2">(Change)</span>
                     </div>
                 </div>
-                <div class="col-12 col-md-7 order-2 order-md-1">
-                    <h1 class="delivery-and-payment-section-heading">
-                        Delivery and Payment
-                    </h1>
-                    <p class="delivery-and-payment-section-description">
-                        Enjoy hassle-free payment with the plenitude of payment options
-                        available for you. Get live tracking and locate your food on a
-                        live map. It's quite a sight to see your food arrive to your door.
-                        Plus, you get a 5% discount on every order every time you pay
-                        online.
-                    </p>
-                    <button class="custom-button">Order Now</button>
-                    <div class="mt-3">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/visa-card-img.png" class="payment-card-img" />
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/master-card-img.png" class="payment-card-img" />
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/paypal-card-img.png" class="payment-card-img" />
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/american-express-img.png" class="payment-card-img" />
+
+                <!-- Right: Studio Visual Showcase Card -->
+                <div class="col-12 col-lg-6">
+                    <div class="nu-hero-visual-card nu-hover-lift">
+                        <img src="assets/hero/nuorder-hero.webp" alt="Cinematic gourmet food bowl showcase" class="nu-hero-main-img" />
+                        <div class="nu-hero-img-overlay" aria-hidden="true"></div>
+                        
+                        <!-- Floating Glass Info Chips -->
+                        <div class="nu-hero-chip chip-top-right nu-hover-lift">
+                            <i class="fas fa-star text-warning mr-1"></i> ★ 4.8 Rated
+                        </div>
+                        <div class="nu-hero-chip chip-bottom-left nu-hover-lift">
+                            <span class="mr-2">🔥 <strong>320</strong> kcal</span>
+                            <span>💪 <strong>24g</strong> Protein</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="thanking-customers-section pt-5 pb-5">
+    </section>
+
+    <!-- ==================================================
+         2 & 3. LOCATION STATUS & QUICK SEARCH BAR
+         ================================================== -->
+    <section class="nu-quick-discovery-bar" aria-label="Quick Search and Food Discovery">
         <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-7 d-flex flex-column justify-content-center">
-                    <h1 class="thanking-customers-section-heading">
-                        Thank you for being a valuable customer to us.
-                    </h1>
-                    <p class="thanking-customers-section-description">
-                        We have a surprise gift for you
-                    </p>
-                    <div class="d-md-none">
-                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/thanking-customers-section-img.png" class="thanking-customers-section-img" />
+            <div class="row align-items-center">
+                <!-- Search Input Column -->
+                <div class="col-12 col-md-6 col-lg-7 mb-3 mb-md-0">
+                    <div class="nu-quick-search-box">
+                        <input type="text" id="quickDiscoverySearchInput" class="nu-quick-search-input" placeholder="Search dish, protein, calories... (/)" />
+                        <i class="fas fa-search nu-quick-search-icon"></i>
                     </div>
-                    <div>
-                        <button type="button" class="custom-button" data-toggle="modal" data-target="#exampleModal">
-                            Redeem Gift
-                        </button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog mt-5">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title thanking-customers-section-modal-title" id="exampleModalLabel">
-                                            Gift Voucher
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/gift-voucher-img.png" class="w-100" />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                            Close
-                                        </button>
-                                    </div>
+                </div>
+
+                <!-- Popular Search Chips -->
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-md-end">
+                        <span class="text-muted small mr-1">Trending:</span>
+                        <a href="javascript:void(0)" class="nu-tag-chip" onclick="window.nuQuickSearch('High Protein')">💪 High Protein</a>
+                        <a href="javascript:void(0)" class="nu-tag-chip" onclick="window.nuQuickSearch('Under 500 kcal')">🔥 Under 500 kcal</a>
+                        <a href="javascript:void(0)" class="nu-tag-chip" onclick="window.nuQuickSearch('Biryani')">Biryani</a>
+                        <a href="javascript:void(0)" class="nu-tag-chip" onclick="window.nuQuickSearch('Salads')">Salads</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         4. FOOD CATEGORIES (EXPLORE BY CRAVING)
+         ================================================== -->
+    <section class="explore-menu-section" id="exploreMenuSection" aria-label="Explore Menu Categories">
+        <div class="container">
+            <!-- View 1: 8 Categories Grid Header -->
+            <div id="exploreMenuCategoryGridHeader" class="row">
+                <div class="col-12 mb-4 text-center text-md-left">
+                    <div class="nu-section-eyebrow mb-2"><i class="fas fa-compass text-accent mr-1"></i> EXPLORE BY CRAVING</div>
+                    <h2 class="section-header-title mb-1">Explore Food Categories</h2>
+                    <p class="section-header-sub mb-0">Browse across 8 culinary categories from available partner kitchens.</p>
+                </div>
+            </div>
+
+            <!-- View 1: 8 Category Cards (Mobile Horizontal Track / Desktop 4-Col Grid) -->
+            <div class="row" id="exploreMenuCategoryGrid">
+                <!-- Dynamic Category Cards Inserted by app.js -->
+            </div>
+
+            <!-- View 2: Category → Partner Restaurants View -->
+            <div id="categoryDiscoveryView" class="category-discovery-container" style="display: none;">
+                <!-- Breadcrumbs & Single Back Action -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom" style="border-color: var(--nu-border) !important;">
+                    <div class="d-flex flex-column align-items-start mb-3 mb-md-0">
+                        <nav class="nu-breadcrumb" aria-label="Breadcrumb">
+                            <a href="#">Home</a>
+                            <span class="nu-breadcrumb-separator">/</span>
+                            <a href="#exploreMenuSection" id="breadcrumbExploreLink">Explore</a>
+                            <span class="nu-breadcrumb-separator">/</span>
+                            <span class="nu-breadcrumb-active" id="breadcrumbCategoryName">Category</span>
+                        </nav>
+
+                        <div class="d-flex align-items-center mt-1">
+                            <button type="button" class="nu-back-btn mr-3" id="backToExploreBtn" aria-label="Back to Explore Menu">
+                                <i class="fas fa-arrow-left"></i> Back to Explore Menu
+                            </button>
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <h2 class="h3 font-weight-bold text-white mb-0" id="discoveryCategoryTitle">Category</h2>
+                                    <span class="discovery-location-pill ml-2" id="discoveryLocationTag">Delivering in Hyderabad</span>
                                 </div>
+                                <p class="text-muted small mb-0 mt-1" id="discoveryCategoryDesc">Available partner kitchens serving this category.</p>
                             </div>
                         </div>
                     </div>
+
+                    <div>
+                        <span class="badge badge-secondary p-2" id="discoveryItemCountBadge">0 partner restaurants • 0 dishes</span>
+                    </div>
                 </div>
-                <div class="col-12 col-md-5 d-none d-md-block">
-                    <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/thanking-customers-section-img.png" class="thanking-customers-section-img" />
+
+                <!-- Controls & Filter Toolbar for Restaurants -->
+                <div class="nu-discovery-toolbar mb-4">
+                    <!-- Left: Search Box -->
+                    <div class="nu-toolbar-search">
+                        <input type="text" class="nu-toolbar-input" id="discoverySearchInput" placeholder="Search restaurant name, cuisine, or dish..." />
+                        <i class="fas fa-search nu-toolbar-icon"></i>
+                    </div>
+
+                    <!-- Center: Filter Pills Track -->
+                    <div class="nu-filter-pills-track">
+                        <button type="button" class="filter-pill-btn" id="filterRatingPill">
+                            <i class="fas fa-star text-warning"></i> ★ 4.0+
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterFastDeliveryPill">
+                            <i class="fas fa-bolt text-accent"></i> ⚡ &lt; 30 Mins
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterOfferPill">
+                            <i class="fas fa-tag text-accent"></i> 🏷 Offers
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterOpenOnlyPill">
+                            <span class="filter-pill-dot veg"></span> ● Open Now
+                        </button>
+                    </div>
+
+                    <!-- Right: Sort Dropdown -->
+                    <div class="nu-toolbar-sort">
+                        <label for="discoverySortSelect" class="nu-sort-label">Sort:</label>
+                        <div class="nu-sort-select-wrapper">
+                            <select id="discoverySortSelect" class="discovery-sort-select">
+                                <option value="recommended">Recommended ▼</option>
+                                <option value="rating-desc">Rating: High to Low</option>
+                                <option value="delivery-asc">Fastest Delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partner Restaurants Cards Container -->
+                <div class="row" id="categoryRestaurantsGrid">
+                    <!-- Rendered dynamically by app.js -->
+                </div>
+            </div>
+
+            <!-- View 3: Dedicated Single Restaurant Menu View -->
+            <div id="restaurantMenuView" class="single-restaurant-container" style="display: none;">
+                <!-- Breadcrumbs & Single Back Action -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom" style="border-color: var(--nu-border) !important;">
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="nu-back-btn mr-3" id="backToRestaurantsBtn" aria-label="Back to Restaurants">
+                            <i class="fas fa-arrow-left"></i> Back to Restaurants
+                        </button>
+                        <nav class="nu-breadcrumb" aria-label="Breadcrumb">
+                            <a href="#">Home</a>
+                            <span class="nu-breadcrumb-separator">/</span>
+                            <a href="#exploreMenuSection" id="restBreadcrumbExploreLink">Explore</a>
+                            <span class="nu-breadcrumb-separator">/</span>
+                            <span class="nu-breadcrumb-active" id="restBreadcrumbRestName">Restaurant Menu</span>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Restaurant Hero Header Card -->
+                <div class="nu-rest-header-card p-3 p-md-4 mb-4" id="restaurantHeaderCard" style="background: var(--nu-surface-card); border: 1px solid var(--nu-border); border-radius: 16px;">
+                    <!-- Rendered dynamically by app.js -->
+                </div>
+
+                <!-- Search & Nutrition Filters Toolbar -->
+                <div class="nu-discovery-toolbar mb-4">
+                    <!-- Search Box -->
+                    <div class="nu-toolbar-search">
+                        <input type="text" class="nu-toolbar-input" id="restaurantMenuSearchInput" placeholder="Search dishes in this restaurant..." />
+                        <i class="fas fa-search nu-toolbar-icon"></i>
+                    </div>
+
+                    <!-- Nutrition Quick Filter Pills -->
+                    <div class="nu-filter-pills-track">
+                        <button type="button" class="filter-pill-btn" id="filterNutrHighProtein">
+                            <i class="fas fa-dumbbell text-accent"></i> 💪 High Protein
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterNutrUnder500">
+                            <i class="fas fa-fire text-accent"></i> 🔥 Under 500 kcal
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterNutrVeg">
+                            <span class="filter-pill-dot veg"></span> 🥗 Veg Only
+                        </button>
+                        <button type="button" class="filter-pill-btn" id="filterNutrHighFiber">
+                            <i class="fas fa-leaf text-accent"></i> 🌾 High Fiber
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Restaurant Category Tabs -->
+                <div class="mb-4 d-flex gap-2 overflow-auto py-2" id="restaurantCategoryTabs" style="scrollbar-width: thin;">
+                    <!-- Rendered dynamically by app.js -->
+                </div>
+
+                <!-- Complete Your Meal Add-on Shelf -->
+                <div class="mb-4" id="restaurantCompleteMealSection">
+                    <h4 class="h6 text-accent font-weight-bold text-uppercase mb-2"><i class="fas fa-utensils mr-1"></i> Complete Your Meal</h4>
+                    <div class="d-flex gap-3 overflow-auto pb-2" id="restaurantCompleteMealTrack">
+                        <!-- Rendered dynamically by app.js -->
+                    </div>
+                </div>
+
+                <!-- Restaurant Food Dishes Grid -->
+                <div class="row" id="restaurantFoodGrid">
+                    <!-- Rendered dynamically by app.js -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         5. RESTAURANTS NEAR YOU (POPULAR NEAR YOU)
+         ================================================== -->
+    <section class="nu-restaurants-section" id="restaurantsSection" aria-label="Partner Restaurants">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                <div class="mb-3 mb-md-0">
+                    <div class="nu-section-eyebrow mb-2"><i class="fas fa-store text-accent mr-1"></i> POPULAR NEAR YOU</div>
+                    <h2 class="section-header-title mb-1">Curated Partner Kitchens</h2>
+                    <p class="section-header-sub mb-0">
+                        Curated kitchens delivering in <strong class="text-accent" id="nearbyRestaurantsLocationBadge">Hyderabad</strong>.
+                    </p>
+                </div>
+                <button type="button" class="custom-outline-button align-self-start align-self-md-center" data-toggle="modal" data-target="#nuLocationModal">
+                    <i class="fas fa-map-marker-alt mr-1 text-accent"></i> Change City
+                </button>
+            </div>
+
+            <!-- Dynamic Restaurant Cards -->
+            <div class="row" id="nearbyRestaurantsGrid">
+                <!-- Rendered by app.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         6. POPULAR / RECOMMENDED FOOD (MADE FOR YOUR GOALS)
+         ================================================== -->
+    <section class="nu-popular-section" id="popularSection" aria-label="Popular Food Items">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                <div class="mb-3 mb-md-0">
+                    <div class="nu-section-eyebrow mb-2"><i class="fas fa-heartbeat text-accent mr-1"></i> MADE FOR YOUR GOALS</div>
+                    <h2 class="section-header-title mb-1">Popular Dishes &amp; Recommended Meals</h2>
+                    <p class="section-header-sub mb-0">Top-rated dishes matched with real-time calorie and macro estimation.</p>
+                </div>
+                <a href="#exploreMenuSection" class="custom-outline-button d-none d-md-inline-flex">
+                    Explore All Menu
+                </a>
+            </div>
+
+            <!-- Dynamic Popular Food Cards (2-Col Mobile / 3-Col Desktop) -->
+            <div class="row" id="popularDishesGrid">
+                <!-- Rendered by app.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         7. SPECIAL OFFERS & DISCOUNTS (DEALS WORTH ORDERING)
+         ================================================== -->
+    <section class="nu-offers-section" id="offersSection" aria-label="Special Offers and Discounts">
+        <div class="container">
+            <div class="mb-4">
+                <div class="nu-section-eyebrow mb-2"><i class="fas fa-tag text-accent mr-1"></i> DEALS WORTH ORDERING</div>
+                <h2 class="section-header-title mb-1">Special Offers &amp; Hyperlocal Deals</h2>
+                <p class="section-header-sub mb-0">Transparent promo savings on gourmet meals &amp; family combos.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-deal-card nu-hover-lift h-100">
+                        <div class="nu-deal-discount">50% OFF</div>
+                        <h4 class="text-white font-weight-bold mb-2">Welcome Discount</h4>
+                        <p class="text-muted small mb-3">Get 50% discount up to ₹100 on your first order. Use code <strong>NUORDER50</strong>.</p>
+                        <a href="#exploreMenuSection" class="custom-button btn-sm">Order Now</a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-deal-card nu-hover-lift h-100">
+                        <div class="nu-deal-discount">FREE DELIVERY</div>
+                        <h4 class="text-white font-weight-bold mb-2">Zero Delivery Fee</h4>
+                        <p class="text-muted small mb-3">Enjoy 100% free delivery on all orders above ₹499 across all partner kitchens.</p>
+                        <a href="#exploreMenuSection" class="custom-button btn-sm">Browse Menu</a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-deal-card nu-hover-lift h-100">
+                        <div class="nu-deal-discount">FLAT ₹150 OFF</div>
+                        <h4 class="text-white font-weight-bold mb-2">Party &amp; Family Pack</h4>
+                        <p class="text-muted small mb-3">Save ₹150 on group combos and large family meal platters. Code <strong>NUPARTY</strong>.</p>
+                        <a href="#exploreMenuSection" class="custom-button btn-sm">Claim Deal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         8. NUORDER AI SHOWCASE SECTION (MEET YOUR AI ASSISTANT)
+         ================================================== -->
+    <section class="nu-ai-section" id="aiSection" aria-label="NUOrder AI Features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="nu-section-eyebrow mb-2 justify-content-center"><i class="fas fa-brain text-accent mr-1"></i> MEET YOUR AI ASSISTANT</div>
+                <h2 class="section-header-title text-white">Your food, intelligently chosen.</h2>
+                <p class="section-header-sub mx-auto mb-4" style="max-width: 620px;">
+                    Tell NU AI what you're craving, your calorie target, protein goal, budget, or dietary preference.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-ai-card nu-hover-lift h-100" onclick="$('#nuAIAssistantModal').modal('show');" role="button">
+                        <div class="nu-ai-icon-wrap">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="h5 text-white font-weight-bold mb-2">AI Food Scanner</h3>
+                        <p class="text-muted small mb-0">
+                            Snap a photo or ask about any food plate to estimate macronutrients, calories, and discover healthy dishes from nearby partner kitchens.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-ai-card nu-hover-lift h-100" onclick="$('#nuAIAssistantModal').modal('show');" role="button">
+                        <div class="nu-ai-icon-wrap">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="h5 text-white font-weight-bold mb-2">Smart Taste Matching</h3>
+                        <p class="text-muted small mb-0">
+                            Hyperlocal recommendation engine that learns your dietary preferences, spice tolerance, and cravings to suggest personalized meals.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="nu-ai-card nu-hover-lift h-100" onclick="$('#nuAIAssistantModal').modal('show');" role="button">
+                        <div class="nu-ai-icon-wrap">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="h5 text-white font-weight-bold mb-2">Group Cart Splitter</h3>
+                        <p class="text-muted small mb-0">
+                            Order with friends, split items automatically, and calculate individual payments with real-time collaborative cart synchronization.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         9. WHY NUORDER? (SMARTER FOOD ORDERING)
+         ================================================== -->
+    <section class="wcu-section nu-reveal-up" id="wcuSection" aria-label="Why Choose Us">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-4 text-center text-md-left">
+                    <div class="nu-section-eyebrow mb-2"><i class="fas fa-shield-alt text-accent mr-1"></i> WHY NUORDER</div>
+                    <h2 class="section-header-title">Smarter Food Ordering</h2>
+                    <p class="section-header-sub">
+                        Hyperlocal intelligence, curated partner kitchens, and seamless delivery tailored to your taste.
+                    </p>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="wcu-card p-4 nu-hover-lift h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="wcu-icon-wrapper mb-3">
+                                <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/food-serve.png" alt="Curated food service experience" class="wcu-card-image" />
+                            </div>
+                            <h3 class="wcu-card-title">Curated Service</h3>
+                            <p class="wcu-card-description">
+                                Experience fine dining at home. Orders are carefully packaged in tamper-proof thermal boxes to arrive piping hot.
+                            </p>
+                        </div>
+                        <div class="wcu-card-footer mt-3">
+                            <span class="text-accent small font-weight-bold">Verified Kitchens <i class="fas fa-check-circle ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="wcu-card p-4 nu-hover-lift h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="wcu-icon-wrapper mb-3">
+                                <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/fruits-img.png" alt="Fresh organic produce and ingredients" class="wcu-card-image" />
+                            </div>
+                            <h3 class="wcu-card-title">Farm Fresh Food</h3>
+                            <p class="wcu-card-description">
+                                Partnered with certified kitchens and local growers to bring high-quality, farm-fresh ingredients straight to your table.
+                            </p>
+                        </div>
+                        <div class="wcu-card-footer mt-3">
+                            <span class="text-accent small font-weight-bold">Quality Assured <i class="fas fa-leaf ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="wcu-card p-4 nu-hover-lift h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="wcu-icon-wrapper mb-3">
+                                <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/offers-img.png" alt="Discounts and smart promotional offers" class="wcu-card-image" />
+                            </div>
+                            <h3 class="wcu-card-title">Transparent Pricing</h3>
+                            <p class="wcu-card-description">
+                                Restaurant-controlled prices with no hidden charges, clear delivery fees, and instant promo savings.
+                            </p>
+                        </div>
+                        <div class="wcu-card-footer mt-3">
+                            <span class="text-accent small font-weight-bold">Zero Hidden Fees <i class="fas fa-shield-alt ml-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         10. STUDIO MINIMAL 3-COLUMN FOOTER (Task 3.8 / 3.9 FIX B)
+         ================================================== -->
+    <footer class="nu-footer nu-reveal-up" aria-label="Page Footer">
+        <div class="container">
+            <!-- Brand Top Block -->
+            <div class="row align-items-center justify-content-between pb-3">
+                <div class="col-12 col-md-6 text-center text-md-left mb-3 mb-md-0">
+                    <a class="nu-brand d-inline-flex align-items-center mb-2" href="#">
+                        <span class="nu-brand-logo">NU</span>
+                        <span class="nu-brand-text">NUOrder</span>
+                    </a>
+                    <p class="nu-footer-tagline mb-0">Order Smarter. Eat Better.</p>
+                </div>
+            </div>
+
+            <div class="nu-footer-divider my-4"></div>
+
+            <!-- Structured 3-Column Navigation Links -->
+            <div class="row text-left mb-4">
+                <div class="col-6 col-md-4 mb-4 mb-md-0">
+                    <span class="nu-footer-col-header d-block mb-3">EXPLORE</span>
+                    <ul class="nu-footer-links-list">
+                        <li><a href="#" onclick="if(window.nuSetActiveNav) window.nuSetActiveNav('home');">Home</a></li>
+                        <li><a href="#exploreMenuSection" onclick="if(window.nuSetActiveNav) window.nuSetActiveNav('categories');">Food</a></li>
+                        <li><a href="#restaurantsSection" onclick="if(window.nuSetActiveNav) window.nuSetActiveNav('restaurants');">Restaurants</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#nuAIAssistantModal">AI Assistant</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4 mb-4 mb-md-0">
+                    <span class="nu-footer-col-header d-block mb-3">COMPANY</span>
+                    <ul class="nu-footer-links-list">
+                        <li><a href="#wcuSection">About NUOrder</a></li>
+                        <li><a href="#wcuSection">Contact</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#nuFeedbackModal">Privacy</a></li>
+                        <li><a href="javascript:void(0)" data-toggle="modal" data-target="#nuFeedbackModal">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4">
+                    <span class="nu-footer-col-header d-block mb-3">CONNECT</span>
+                    <ul class="nu-footer-links-list">
+                        <li><a href="https://github.com/badavathmadanlal" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/badavathmadanlal/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nu-footer-divider my-4"></div>
+
+            <!-- Contact Section -->
+            <div class="row align-items-center mb-4">
+                <div class="col-12 text-center text-md-left">
+                    <span class="nu-footer-col-header d-block mb-1">CONTACT</span>
+                    <a href="mailto:badavathmadan593@gmail.com" class="nu-footer-email-link">
+                        badavathmadan593@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <div class="nu-footer-divider my-4"></div>
+
+            <!-- Social Icon Buttons -->
+            <div class="row align-items-center mb-4">
+                <div class="col-12 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
+                    <a href="https://github.com/badavathmadanlal" target="_blank" rel="noopener noreferrer" class="nu-footer-social-circle" aria-label="GitHub Profile" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/badavathmadanlal/" target="_blank" rel="noopener noreferrer" class="nu-footer-social-circle" aria-label="LinkedIn Profile" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nu-footer-divider my-3"></div>
+
+            <!-- Copyright -->
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <div class="nu-footer-copyright">
+                        &copy; 2026 NUOrder. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================================================
+         MODALS & INTERACTIVE DIALOGS
+         ================================================== -->
+
+    <!-- NUOrder AI Assistant Modal (Task 3.4) -->
+    <div class="modal fade" id="nuAIAssistantModal" tabindex="-1" aria-labelledby="nuAIAssistantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable nu-ai-dialog">
+            <div class="modal-content modal-content-nu nu-ai-modal-content">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="nu-brand-logo" style="width: 32px; height: 32px; font-size: 14px;">AI</span>
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <h3 class="h5 font-weight-bold text-white mb-0" id="nuAIAssistantModalLabel">NUOrder AI Assistant</h3>
+                                <span class="nu-brand-badge ml-2">PRO</span>
+                            </div>
+                            <small class="text-muted">Food Discovery &amp; Nutrition Intelligence</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge badge-dark p-2 text-accent" id="aiModalContextPill">📍 Hyderabad</span>
+                        <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat History Container -->
+                <div class="modal-body nu-ai-chat-body" id="nuAIChatBody">
+                    <div id="nuAIChatContainer" class="d-flex flex-column gap-3">
+                        <!-- Default Welcome Bubble -->
+                        <div class="nu-ai-message assistant">
+                            <div class="nu-ai-avatar ai">NU</div>
+                            <div class="nu-ai-bubble">
+                                <p class="mb-1"><strong>Hello! I am NUOrder AI.</strong></p>
+                                <p class="mb-0 text-muted small">I can help you discover dishes, estimate calories &amp; macros, analyze your cart, or find recommendations in your city. What are you craving today?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thinking Animation Bubble -->
+                    <div class="nu-ai-thinking" id="nuAIThinkingIndicator">
+                        <i class="fas fa-brain mr-1"></i> Thinking
+                        <span class="thinking-dots">
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Chips -->
+                <div class="nu-ai-quick-prompts" id="nuAIQuickPrompts">
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Find food near me')">
+                        🍛 Find food near me
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Show me high protein food')">
+                        🥗 High Protein
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Show meals under 500 calories')">
+                        🔥 Under 500 kcal
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Show vegetarian food under ₹300')">
+                        💰 Under ₹300
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('What coupons can I use?')">
+                        🎟 What coupons can I use?
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Can this restaurant deliver to me?')">
+                        📍 Can this restaurant deliver to me?
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('Track my order')">
+                        🛵 Track my order
+                    </button>
+                    <button type="button" class="nu-ai-prompt-btn" onclick="window.sendAIPrompt('What payment options are available?')">
+                        💳 Payment options
+                    </button>
+                </div>
+
+                <!-- Chat Input Footer -->
+                <div class="modal-footer nu-ai-chat-footer p-0">
+                    <form id="nuAIQueryForm" class="w-100 p-3" onsubmit="window.handleAISubmit(event);">
+                        <div class="nu-ai-input-group">
+                            <input type="text" id="nuAIQueryInput" class="form-control form-control-nu" placeholder="Ask about meals, calories, macros, or recommendations..." autocomplete="off" />
+                            <button type="submit" id="nuAISendBtn" class="custom-button px-4" aria-label="Send message">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <div class="follow-us-section pt-5 pb-5" id="followUsSection">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="follow-us-section-heading">Follow Us</h1>
+
+    <!-- Location Selector Modal -->
+    <div class="modal fade" id="nuLocationModal" tabindex="-1" aria-labelledby="nuLocationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu">
+                    <h3 class="modal-title" id="nuLocationModalLabel">
+                        <i class="fas fa-map-marker-alt text-accent mr-2"></i> Choose Delivery Location
+                    </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="col-12">
-                    <div class="d-flex flex-row justify-content-center">
-                        <div class="follow-us-icon-container">
-                            <i class="fab fa-twitter icon"></i>
+                <div class="modal-body modal-body-nu">
+                    <p class="text-muted small mb-3">Set your real delivery address or detect your location automatically.</p>
+
+                    <!-- GPS Action Button -->
+                    <div class="mb-3">
+                        <button type="button" id="modalUseCurrentLocBtn" class="btn btn-block nu-geo-btn" onclick="window.detectUserGeolocation('#modalUseCurrentLocBtn', '#modalGeoStatus');">
+                            <i class="fas fa-crosshairs text-accent mr-2"></i> Use Current Location
+                        </button>
+                        <div id="modalGeoStatus" class="small mt-2 text-center d-none"></div>
+                    </div>
+
+                    <!-- Saved Delivery Addresses Section -->
+                    <div id="savedDeliveryAddressCard" class="nu-address-card mb-4 d-none">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="form-label-nu text-accent font-weight-bold mb-0">
+                                <i class="fas fa-bookmark text-accent mr-1"></i> Saved Delivery Addresses
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-accent" onclick="window.showAddAddressForm();">
+                                <i class="fas fa-plus mr-1"></i> Add New Address
+                            </button>
                         </div>
-                        <div class="follow-us-icon-container">
-                            <i class="fab fa-instagra`m icon"></i>
+                        <div id="savedAddressesList" class="nu-saved-address-list"></div>
+                    </div>
+
+                    <!-- Delivery Address Section & Form -->
+                    <div id="deliveryAddressSection" class="mt-4 pt-4 border-top" style="border-color: var(--nu-border) !important; margin-top: 28px !important;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <span class="form-label-nu font-weight-bold text-white font-size-15 mb-0" id="addressFormTitle">
+                                <i class="fas fa-plus-circle text-accent mr-2"></i> Add Delivery Address
+                            </span>
+                            <small class="text-muted">* Required fields</small>
                         </div>
-                        <div class="follow-us-icon-container">
-                            <i class="fab fa-facebook icon"></i>
+
+                        <form id="nuDeliveryAddressForm" onsubmit="window.saveDeliveryAddress(event);">
+                            <!-- Address Label Selector -->
+                            <div class="form-group mb-3">
+                                <label class="form-label-nu text-muted small mb-1">Save Address As *</label>
+                                <div class="d-flex align-items-center gap-2 flex-wrap" id="addrLabelPills">
+                                    <button type="button" class="btn btn-sm btn-outline-light nu-label-pill active" onclick="window.selectAddrFormLabel('Home', this);"><i class="fas fa-home mr-1 text-accent"></i> Home</button>
+                                    <button type="button" class="btn btn-sm btn-outline-light nu-label-pill" onclick="window.selectAddrFormLabel('Hostel', this);"><i class="fas fa-building mr-1 text-accent"></i> Hostel</button>
+                                    <button type="button" class="btn btn-sm btn-outline-light nu-label-pill" onclick="window.selectAddrFormLabel('Work', this);"><i class="fas fa-briefcase mr-1 text-accent"></i> Work</button>
+                                    <button type="button" class="btn btn-sm btn-outline-light nu-label-pill" onclick="window.selectAddrFormLabel('Other', this);"><i class="fas fa-map-marker-alt mr-1 text-accent"></i> Other</button>
+                                </div>
+                                <div id="customLabelGroup" class="mt-2 d-none">
+                                    <input type="text" id="addrCustomLabel" class="form-control form-control-nu" placeholder="e.g. Friend's Place, Studio..." oninput="window.checkAddressFormValidity();" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- Flat / House / Hostel / Building -->
+                                <div class="form-group col-12 col-md-6 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">Flat / House / Hostel / Building *</label>
+                                    <input type="text" id="addrHouseFlat" class="form-control form-control-nu" placeholder="e.g. Hostel 4, Room 203" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                                <!-- Road / Street -->
+                                <div class="form-group col-12 col-md-6 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">Road / Street *</label>
+                                    <input type="text" id="addrStreet" class="form-control form-control-nu" placeholder="e.g. College Road" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- Area / Locality -->
+                                <div class="form-group col-12 col-md-6 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">Area / Locality *</label>
+                                    <input type="text" id="addrArea" class="form-control form-control-nu" placeholder="e.g. Tarapur" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                                <!-- Landmark (Optional) -->
+                                <div class="form-group col-12 col-md-6 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">Landmark (Optional)</label>
+                                    <input type="text" id="addrLandmark" class="form-control form-control-nu" placeholder="e.g. Near NIT Silchar" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- Pincode (Main Verification Input) -->
+                                <div class="form-group col-12 col-md-4 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">Pincode (6-digit PIN) *</label>
+                                    <input type="text" id="addrPincode" class="form-control form-control-nu" placeholder="e.g. 788001" maxlength="6" pattern="[0-9]{6}" required oninput="window.handlePincodeInput(this.value);" />
+                                    <div id="pincodeStatus" class="small mt-1 d-none"></div>
+                                </div>
+
+                                <!-- Post Office / Sub-locality Selector -->
+                                <div class="form-group col-12 col-md-8 mb-3 d-none" id="postOfficeSelectGroup">
+                                    <label class="form-label-nu text-muted small mb-1">Select Post Office / Locality</label>
+                                    <select id="addrPostOfficeSelect" class="form-control form-control-nu" onchange="window.handlePostOfficeSelect(this.value);"></select>
+                                    <div id="selectedPostOfficeFull" class="small text-accent mt-1 p-2 rounded d-none" style="background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.2);" title="">
+                                        <i class="fas fa-info-circle mr-1"></i> <strong>Selected Locality:</strong> <span id="fullPostOfficeText"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- City -->
+                                <div class="form-group col-12 col-md-4 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">City *</label>
+                                    <input type="text" id="addrCity" class="form-control form-control-nu" placeholder="City" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                                <!-- District -->
+                                <div class="form-group col-12 col-md-4 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">District *</label>
+                                    <input type="text" id="addrDistrict" class="form-control form-control-nu" placeholder="District" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                                <!-- State -->
+                                <div class="form-group col-12 col-md-4 mb-3">
+                                    <label class="form-label-nu text-muted small mb-1">State *</label>
+                                    <input type="text" id="addrState" class="form-control form-control-nu" placeholder="State" required oninput="window.checkAddressFormValidity();" />
+                                </div>
+                            </div>
+
+                            <!-- Set as Default Checkbox -->
+                            <div class="form-group mb-3">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="addrSetDefaultCheck" />
+                                    <label class="custom-control-label text-light small" for="addrSetDefaultCheck">Set as Default Delivery Address</label>
+                                </div>
+                            </div>
+
+                            <div id="addressInlineError" class="alert alert-danger p-2 small mb-3 d-none" style="background: rgba(220, 53, 69, 0.15); border-color: rgba(220, 53, 69, 0.3); color: #ff6b6b;"></div>
+
+                            <div class="mt-3">
+                                <button type="submit" id="saveDeliveryAddressBtn" class="btn btn-block nu-save-addr-btn disabled" disabled>
+                                    <i class="fas fa-check-circle mr-2"></i> Save Delivery Address
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Direct City Selection Section -->
+                    <div class="mt-4 pt-3 border-top" style="border-color: var(--nu-border) !important;">
+                        <span class="form-label-nu d-block mb-2 font-weight-bold text-white">Select City Directly</span>
+                        <div class="mb-3">
+                            <input type="text" id="locationSearchInput" class="form-control form-control-nu" placeholder="Search city (e.g. Hyderabad, Khammam, Warangal, Bengaluru...)" />
+                        </div>
+                        <div class="mb-3" id="locationCitiesList"></div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-nu">
+                    <button type="button" class="btn nu-modal-close-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Search Modal -->
+    <div class="modal fade" id="nuSearchModal" tabindex="-1" aria-labelledby="nuSearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu">
+                    <h3 class="modal-title" id="nuSearchModalLabel">
+                        <i class="fas fa-search text-accent mr-2"></i> Search NUOrder
+                    </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-nu" placeholder="Search food, high protein, low calorie..." autofocus onkeydown="if(event.key==='Enter'){ $('#nuSearchModal').modal('hide'); window.openCategoryDiscovery('main-course'); }" />
+                    </div>
+                    <div class="small text-muted mt-2">
+                        <span class="d-block mb-1"><strong>Popular Searches:</strong></span>
+                        <span class="badge badge-secondary mr-1 p-2" onclick="$('#nuSearchModal').modal('hide'); window.nuQuickSearch('High Protein');" style="cursor: pointer;">💪 High Protein</span>
+                        <span class="badge badge-secondary mr-1 p-2" onclick="$('#nuSearchModal').modal('hide'); window.nuQuickSearch('Under 500 kcal');" style="cursor: pointer;">🔥 Under 500 kcal</span>
+                        <span class="badge badge-secondary mr-1 p-2" onclick="$('#nuSearchModal').modal('hide'); window.nuQuickSearch('Biryani');" style="cursor: pointer;">Biryani</span>
+                        <span class="badge badge-secondary p-2" onclick="$('#nuSearchModal').modal('hide'); window.nuQuickSearch('Salads');" style="cursor: pointer;">Salads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Details Modal (With Estimated Nutrition Breakdown) -->
+    <div class="modal fade" id="nuFoodDetailsModal" tabindex="-1" aria-labelledby="nuFoodDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu">
+                    <div class="d-flex align-items-center">
+                        <span id="detailFoodTypeBadge" class="food-type-badge veg mr-2"></span>
+                        <h3 class="modal-title h5 font-weight-bold mb-0 text-white" id="detailFoodTitle">Food Name</h3>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu">
+                    <div class="row">
+                        <div class="col-12 col-md-5 mb-3 mb-md-0">
+                            <img id="detailFoodImg" src="" alt="Dish image" class="food-details-img mb-2" />
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                <span id="detailFoodOffer" class="food-offer-badge" style="position: static; display: inline-block;"></span>
+                                <span id="detailFoodSpiceBadge" class="badge p-2"></span>
+                            </div>
+                            <small class="text-muted d-block mb-1" id="detailFoodPortion"><i class="fas fa-utensil-spoon mr-1 text-accent"></i> Portion: Serves 1-2</small>
+                            <small class="text-muted d-block" id="detailFoodAllergens"><i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Allergens: None</small>
+                        </div>
+
+                        <div class="col-12 col-md-7">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="h4 text-accent font-weight-bold mb-0" id="detailFoodPrice">₹0</span>
+                                <span id="detailFoodRating" class="food-rating-pill"></span>
+                            </div>
+
+                            <p class="text-white font-weight-bold mb-1" id="detailFoodRest">Restaurant Name</p>
+                            <p class="text-muted small mb-2" id="detailFoodDelivery">25 mins • 2.1 km</p>
+                            <p class="text-muted small mb-3" id="detailFoodDesc">Detailed description of the dish and its preparation.</p>
+
+                            <!-- Estimated Nutrition Section -->
+                            <div class="mb-3 p-3 rounded" style="background: rgba(15, 17, 21, 0.7); border: 1px solid var(--nu-border);">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-accent font-weight-bold small text-uppercase letter-spacing-1">
+                                        <i class="fas fa-heartbeat mr-1"></i> Estimated Nutrition
+                                    </span>
+                                    <span class="badge badge-dark text-muted small" style="font-size: 10px;">Per Serving</span>
+                                </div>
+
+                                <div class="nutrition-grid" id="detailNutritionGrid">
+                                    <!-- Populated dynamically: Calories, Protein, Carbs, Fat, Fiber, Sugar, Sodium -->
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="form-label-nu d-block mb-1">Key Ingredients:</span>
+                                <div id="detailFoodIngredients"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div id="detailFoodTags"></div>
+                            </div>
+
+                            <div id="detailFoodAction" class="pt-2 border-top" style="border-color: var(--nu-border) !important;"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="footer-section pt-5 pb-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <img src="https://d2clawv67efefq.cloudfront.net/ccbp-responsive-website/food-munch-logo-light.png" class="food-munch-logo" />
-                    <h1 class="footer-section-mail-id">orderfood@foodmunch.com</h1>
-                    <p class="footer-section-address">
-                        123 Ayur Vigyan Nagar, New Delhi, India.
-                    </p>
+
+    <!-- Cart Drawer / Modal (With Nutrition Estimate Engine) -->
+    <div class="modal fade" id="nuCartModal" tabindex="-1" aria-labelledby="nuCartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu">
+                    <h3 class="modal-title" id="nuCartModalLabel">
+                        <i class="fas fa-shopping-bag text-accent mr-2"></i> Your Order Cart
+                    </h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu">
+                    <!-- Dynamic Cart Content & Nutrition Engine Inserted by app.js -->
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Checkout Modal (Phase 4.8) -->
+    <div class="modal fade" id="nuCheckoutModal" tabindex="-1" aria-labelledby="nuCheckoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuCheckoutModalLabel">
+                        <i class="fas fa-file-invoice text-accent mr-2"></i> Order Checkout
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu" id="nuCheckoutModalBody">
+                    <!-- Dynamic Checkout Experience Inserted by app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Options Modal (Phase 4.9) -->
+    <div class="modal fade" id="nuPaymentModal" tabindex="-1" aria-labelledby="nuPaymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-link text-white p-0 mr-1" onclick="window.safeModalTransition('#nuPaymentModal', '#nuCheckoutModal');" aria-label="Back to Checkout" title="Back to Checkout">
+                            <i class="fas fa-arrow-left" style="font-size: 16px;"></i>
+                        </button>
+                        <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuPaymentModalLabel">
+                            <i class="fas fa-credit-card text-accent mr-2"></i> Payment Options
+                        </h3>
+                    </div>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu" id="nuPaymentModalBody">
+                    <!-- Dynamic Payment Selection Experience Inserted by app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Streamlined Feedback Modal -->
+    <div class="modal fade" id="nuFeedbackModal" tabindex="-1" aria-labelledby="nuFeedbackModalLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu">
+                    <div>
+                        <h3 class="modal-title mb-1" id="nuFeedbackModalLabel">How was your NUOrder experience?</h3>
+                        <p class="text-muted small mb-0">Help us make your food ordering smarter and faster.</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body modal-body-nu">
+                    <form id="nuFeedbackForm" novalidate>
+                        <div class="form-group text-center mb-4">
+                            <label class="form-label-nu d-block mb-2">Overall Experience</label>
+                            <div class="nu-rating-chips">
+                                <button type="button" class="nu-rating-chip-btn selected" data-rating="Excellent">😍 Excellent</button>
+                                <button type="button" class="nu-rating-chip-btn" data-rating="Good">😊 Good</button>
+                                <button type="button" class="nu-rating-chip-btn" data-rating="Average">😐 Average</button>
+                                <button type="button" class="nu-rating-chip-btn" data-rating="Poor">😞 Poor</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="feedbackMessage" class="form-label-nu">Message</label>
+                            <textarea id="feedbackMessage" class="form-control form-control-nu" rows="4" placeholder="Tell us what we can improve..." required></textarea>
+                            <div class="form-error-msg" id="messageError">Please enter your feedback message.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="custom-button">Submit Feedback</button>
+                        </div>
+                    </form>
+
+                    <div class="feedback-success-container" id="nuFeedbackSuccess" role="alert">
+                        <div class="feedback-success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h4 class="text-white font-weight-bold mb-2">Thanks for helping us improve NUOrder.</h4>
+                        <p class="text-muted small mb-4">Your feedback has been captured for this session.</p>
+                        <button type="button" class="custom-button" id="nuFeedbackResetBtn">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         PHONE SIGN-IN MODAL (Task 3.5)
+         ================================================== -->
+    <div class="modal fade" id="nuAuthModal" tabindex="-1" aria-labelledby="nuAuthModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered nu-auth-dialog">
+            <div class="modal-content modal-content-nu nu-auth-modal-content">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="nu-brand-logo" style="width: 30px; height: 30px; font-size: 13px;">NU</span>
+                        <h3 class="h6 font-weight-bold text-white mb-0" id="nuAuthModalLabel">Sign In to NUOrder</h3>
+                    </div>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <!-- STEP 1: Enter Phone Number -->
+                    <div id="authStepPhone" class="auth-step-panel">
+                        <div class="text-center mb-4">
+                            <div class="nu-auth-icon-circle mb-3">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h4 class="text-white font-weight-bold mb-1">Welcome to NUOrder</h4>
+                            <p class="text-muted small mb-0">Enter your mobile number to continue</p>
+                        </div>
+
+                        <form id="authPhoneForm" onsubmit="window.handleAuthPhoneSubmit(event);">
+                            <div class="form-group mb-3">
+                                <label class="form-label-nu">Mobile Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark border-dark text-white font-weight-bold" style="border-radius: 10px 0 0 10px; border-color: var(--nu-border) !important;">+91</span>
+                                    </div>
+                                    <input type="tel" id="authPhoneInput" class="form-control form-control-nu" placeholder="Enter 10-digit number" maxlength="10" pattern="[0-9]{10}" required style="border-radius: 0 10px 10px 0;" />
+                                </div>
+                                <small id="authPhoneError" class="text-danger mt-1 d-none">Please enter a valid 10-digit mobile number.</small>
+                            </div>
+
+                            <button type="submit" id="authPhoneSubmitBtn" class="custom-button btn-block py-2 mb-3">
+                                Continue <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+
+                            <p class="text-muted text-center" style="font-size: 11px; line-height: 1.4;">
+                                By continuing, you agree to NUOrder's <a href="javascript:void(0)" class="text-accent">Terms of Service</a> &amp; <a href="javascript:void(0)" class="text-accent">Privacy Policy</a>.
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- STEP 2: Verify OTP -->
+                    <div id="authStepOTP" class="auth-step-panel d-none">
+                        <div class="text-center mb-4">
+                            <div class="nu-auth-icon-circle mb-3">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4 class="text-white font-weight-bold mb-1">Verify your number</h4>
+                            <p class="text-muted small mb-0">Enter the 6-digit OTP sent to <strong id="authOTPPhoneDisplay" class="text-white">+91 XXXXX XXXXX</strong></p>
+                        </div>
+
+                        <form id="authOTPForm" onsubmit="window.handleAuthOTPSubmit(event);">
+                            <div class="form-group mb-3">
+                                <div class="d-flex justify-content-center gap-2 mb-2" id="otpInputsContainer">
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                    <input type="text" class="form-control form-control-nu text-center font-weight-bold otp-digit" maxlength="1" pattern="[0-9]" style="width: 44px; height: 50px; font-size: 20px;" required />
+                                </div>
+                                <div class="text-center text-muted small mb-2">
+                                    <span>Demo OTP: <strong>123456</strong> (or any 6 digits)</span>
+                                </div>
+                                <small id="authOTPError" class="text-danger mt-1 text-center d-block d-none">Incorrect OTP. Please try again.</small>
+                            </div>
+
+                            <button type="submit" id="authOTPSubmitBtn" class="custom-button btn-block py-2 mb-3">
+                                Verify OTP <i class="fas fa-check ml-1"></i>
+                            </button>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-link text-muted small p-0" onclick="window.backToPhoneStep();">
+                                    <i class="fas fa-arrow-left mr-1"></i> Change Number
+                                </button>
+                                <button type="button" class="btn btn-link text-accent small p-0" onclick="window.resendDemoOTP();">
+                                    Resend OTP
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- STEP 3: Enter Full Name -->
+                    <div id="authStepName" class="auth-step-panel d-none">
+                        <div class="text-center mb-4">
+                            <div class="nu-auth-icon-circle mb-3">
+                                <i class="far fa-user"></i>
+                            </div>
+                            <h4 class="text-white font-weight-bold mb-1">What's your name?</h4>
+                            <p class="text-muted small mb-0">Tell us how partner kitchens should address your orders</p>
+                        </div>
+
+                        <form id="authNameForm" onsubmit="window.handleAuthNameSubmit(event);">
+                            <div class="form-group mb-3">
+                                <label class="form-label-nu">Full Name</label>
+                                <input type="text" id="authNameInput" class="form-control form-control-nu" placeholder="e.g. Rahul Sharma" required />
+                            </div>
+
+                            <button type="submit" class="custom-button btn-block py-2 mb-2">
+                                Continue <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- STEP 4: Delivery Location & Address -->
+                    <div id="authStepAddress" class="auth-step-panel d-none">
+                        <div class="text-center mb-3">
+                            <div class="nu-auth-icon-circle mb-2">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h4 class="text-white font-weight-bold mb-1">Where should we deliver?</h4>
+                            <p class="text-muted small mb-0">Set your primary delivery address</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="button" id="authUseCurrentLocBtn" class="btn btn-block nu-geo-btn" onclick="window.detectUserGeolocation('#authUseCurrentLocBtn', '#authGeoStatus');">
+                                <i class="fas fa-crosshairs text-accent mr-2"></i> Use Current Location
+                            </button>
+                            <div id="authGeoStatus" class="small mt-1 text-center d-none"></div>
+                        </div>
+
+                        <form id="authAddressForm" onsubmit="window.handleAuthAddressSubmit(event);">
+                            <div class="row">
+                                <div class="col-6 mb-2">
+                                    <label class="form-label-nu">City</label>
+                                    <input type="text" id="authAddressCity" class="form-control form-control-nu" placeholder="City" required />
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label class="form-label-nu">Area / Locality</label>
+                                    <input type="text" id="authAddressArea" class="form-control form-control-nu" placeholder="e.g. Jubilee Hills" required />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <label class="form-label-nu">House / Flat / Street Address</label>
+                                    <input type="text" id="authAddressStreet" class="form-control form-control-nu" placeholder="e.g. Plot 42, Road No. 36" required />
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label-nu">Landmark (Optional)</label>
+                                    <input type="text" id="authAddressLandmark" class="form-control form-control-nu" placeholder="e.g. Near Metro Pillar 14" />
+                                </div>
+                            </div>
+
+                            <!-- Address Label Selector -->
+                            <div class="mb-3">
+                                <label class="form-label-nu d-block mb-1">Save Address As</label>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="nu-address-tag-btn active" data-label="Home" onclick="window.setAddressTag(this, 'Home');">
+                                        🏠 Home
+                                    </button>
+                                    <button type="button" class="nu-address-tag-btn" data-label="Office" onclick="window.setAddressTag(this, 'Office');">
+                                        💼 Office
+                                    </button>
+                                    <button type="button" class="nu-address-tag-btn" data-label="Other" onclick="window.setAddressTag(this, 'Other');">
+                                        📍 Other
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="custom-button btn-block py-2">
+                                Save Address &amp; Complete <i class="fas fa-check ml-1"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         SAVED ADDRESSES MODAL (Task 3.5)
+         ================================================== -->
+    <div class="modal fade" id="nuSavedAddressesModal" tabindex="-1" aria-labelledby="nuSavedAddressesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuSavedAddressesModalLabel">
+                        <i class="fas fa-map-pin text-accent mr-2"></i> Saved Addresses
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu">
+                    <p class="text-muted small mb-3">Manage your saved delivery addresses or select one for your current order.</p>
+                    
+                    <div id="savedAddressesListContainer" class="mb-4">
+                        <!-- Rendered dynamically by renderSavedAddresses() -->
+                    </div>
+
+                    <!-- Add New Address Form -->
+                    <div class="p-3 border rounded" style="border-color: var(--nu-border) !important; background: var(--nu-charcoal);">
+                        <div class="d-flex align-items-center justify-content-between" onclick="$('#newAddressFormCollapse').collapse('toggle');" style="cursor: pointer;">
+                            <strong class="text-white"><i class="fas fa-plus-circle text-accent mr-2"></i> Add New Address</strong>
+                            <i class="fas fa-chevron-down text-muted"></i>
+                        </div>
+                        <div class="collapse mt-3" id="newAddressFormCollapse">
+                            <form id="addNewAddressForm" onsubmit="window.handleAddNewAddressSubmit(event);">
+                                <div class="row">
+                                    <div class="col-6 mb-2">
+                                        <label class="form-label-nu">City</label>
+                                        <input type="text" id="newAddrCity" class="form-control form-control-nu" placeholder="City" required />
+                                    </div>
+                                    <div class="col-6 mb-2">
+                                        <label class="form-label-nu">Area / Locality</label>
+                                        <input type="text" id="newAddrArea" class="form-control form-control-nu" placeholder="e.g. Madhapur" required />
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <label class="form-label-nu">Street Address</label>
+                                        <input type="text" id="newAddrStreet" class="form-control form-control-nu" placeholder="e.g. Flat 302, Cyber Tower" required />
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label-nu">Landmark (Optional)</label>
+                                        <input type="text" id="newAddrLandmark" class="form-control form-control-nu" placeholder="e.g. Near Hitech City Metro" />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label-nu d-block mb-1">Tag As</label>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="nu-address-tag-btn active" data-label="Home" onclick="window.setNewAddrTag(this, 'Home');">🏠 Home</button>
+                                        <button type="button" class="nu-address-tag-btn" data-label="Office" onclick="window.setNewAddrTag(this, 'Office');">💼 Office</button>
+                                        <button type="button" class="nu-address-tag-btn" data-label="Other" onclick="window.setNewAddrTag(this, 'Other');">📍 Other</button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="custom-button btn-block py-2">Save Address</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ==================================================
+         ORDER CONFIRMATION MODAL (Task 4.1)
+         ================================================== -->
+    <div class="modal fade" id="nuOrderConfirmationModal" tabindex="-1" aria-labelledby="nuOrderConfirmationModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-nu text-center p-3">
+                <div class="modal-body modal-body-nu py-4">
+                    <div class="mb-3 text-accent" style="font-size: 54px; line-height: 1;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="h4 font-weight-bold text-white mb-1">Order Placed Successfully!</h3>
+                    <p class="text-muted small mb-3">Thank you for ordering with NUOrder.</p>
+                    
+                    <div class="p-3 border rounded mb-4 text-left" style="border-color: var(--nu-border) !important; background: var(--nu-charcoal);">
+                        <div class="d-flex justify-content-between mb-2 pb-2 border-bottom" style="border-color: var(--nu-border) !important;">
+                            <span class="text-muted small">Order ID</span>
+                            <strong class="text-accent font-mono" id="confirmOrderId">NUO-XXXXXX</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Restaurant</span>
+                            <strong class="text-white small" id="confirmRestName">Restaurant Name</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Items Summary</span>
+                            <span class="text-white small" id="confirmItemsSummary">2 items</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Total Paid</span>
+                            <strong class="text-accent h6 mb-0 font-weight-bold" id="confirmTotalPaid">₹0</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted small">Delivery Address</span>
+                            <span class="text-white small text-right" id="confirmDelivAddress">Address</span>
+                        </div>
+                        <div class="d-flex justify-content-between pt-2 border-top" style="border-color: var(--nu-border) !important;">
+                            <span class="text-muted small">Estimated Delivery</span>
+                            <span class="text-white small font-weight-bold" id="confirmEstTime">25–35 mins</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-2 justify-content-center">
+                        <div class="d-flex gap-2">
+                            <button type="button" class="custom-button w-100 py-2" onclick="window.nuTrackConfirmedOrder()">
+                                <i class="fas fa-motorcycle mr-1"></i> Track Order
+                            </button>
+                            <button type="button" class="custom-outline-button w-100 py-2" onclick="window.openMyOrdersModal()">
+                                View My Orders
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-link text-muted small mt-1" data-dismiss="modal">
+                            Continue Ordering
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         ORDER TRACKING MODAL (Task 4.1)
+         ================================================== -->
+    <div class="modal fade" id="nuOrderTrackingModal" tabindex="-1" aria-labelledby="nuOrderTrackingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuOrderTrackingModalLabel">
+                        <i class="fas fa-motorcycle text-accent mr-2"></i> Track Order <span class="badge badge-dark text-accent font-mono ml-2" id="trackOrderId">NUO-XXXXXX</span>
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu" id="orderTrackingModalContent">
+                    <!-- Rendered dynamically by renderOrderTracking() -->
+                </div>
+                <div class="modal-footer modal-footer-nu" id="orderTrackingModalFooter">
+                    <button type="button" class="btn nu-modal-close-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         MY ORDERS HISTORY MODAL (Task 4.1)
+         ================================================== -->
+    <div class="modal fade" id="nuMyOrdersModal" tabindex="-1" aria-labelledby="nuMyOrdersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuMyOrdersModalLabel">
+                        <i class="fas fa-receipt text-accent mr-2"></i> My Orders
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu">
+                    <div id="myOrdersListContainer">
+                        <!-- Rendered dynamically by renderMyOrders() -->
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-nu">
+                    <button type="button" class="btn nu-modal-close-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         ORDER DETAILS MODAL (Task 4.1)
+         ================================================== -->
+    <div class="modal fade" id="nuOrderDetailModal" tabindex="-1" aria-labelledby="nuOrderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuOrderDetailModalLabel">
+                        <i class="fas fa-file-invoice text-accent mr-2"></i> Order Details
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu" id="orderDetailModalContent">
+                    <!-- Rendered dynamically by renderOrderDetail() -->
+                </div>
+                <div class="modal-footer modal-footer-nu" id="orderDetailModalFooter">
+                    <button type="button" class="btn nu-modal-close-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         CANCEL ORDER CONFIRMATION MODAL (Task 4.1)
+         ================================================== -->
+    <div class="modal fade" id="nuCancelConfirmModal" tabindex="-1" aria-labelledby="nuCancelConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content modal-content-nu text-center p-3">
+                <div class="modal-body modal-body-nu py-3">
+                    <div class="mb-2 text-warning" style="font-size: 42px;">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h4 class="h5 font-weight-bold text-white mb-2">Cancel this order?</h4>
+                    <p class="text-muted small mb-4">Are you sure you want to cancel Order <strong class="text-accent font-mono" id="cancelConfirmOrderId">NUO-XXXXXX</strong>?</p>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="custom-outline-button w-100 py-2" data-dismiss="modal">Keep Order</button>
+                        <button type="button" class="btn btn-danger w-100 py-2 font-weight-bold" id="confirmCancelOrderBtn" onclick="window.confirmCancelOrderExec()">Cancel Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ==================================================
+         NUTRITION INFORMATION & PROVENANCE MODAL (Task 4.4)
+         ================================================== -->
+    <div class="modal fade" id="nuNutritionInfoModal" tabindex="-1" aria-labelledby="nuNutritionInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content modal-content-nu">
+                <div class="modal-header modal-header-nu d-flex align-items-center justify-content-between">
+                    <h3 class="modal-title h5 font-weight-bold text-white mb-0" id="nuNutritionInfoModalLabel">
+                        <i class="fas fa-heartbeat text-accent mr-2"></i> Nutrition &amp; Provenance
+                    </h3>
+                    <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-nu" id="nuNutritionInfoModalContent">
+                    <!-- Rendered dynamically by openNutritionInfoModal() -->
+                </div>
+                <div class="modal-footer modal-footer-nu">
+                    <button type="button" class="btn nu-modal-close-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         FLOATING RIGHT-SIDE AI COPILOT BUTTON (Task 4.6A FIX B)
+         ================================================== -->
+    <div id="nuFloatingAiContainer" style="position: fixed !important; right: 24px !important; bottom: 100px !important; z-index: 99999 !important; align-items: center !important; flex-direction: row-reverse !important; gap: 8px !important; pointer-events: auto !important; opacity: 1 !important; visibility: visible !important;">
+        <button type="button" id="nuFloatingAiBtn" style="position: relative !important; width: 58px !important; height: 58px !important; border-radius: 50% !important; background: #0f172a !important; border: 2px solid #00E599 !important; color: #00E599 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; cursor: pointer !important; box-shadow: 0 4px 24px rgba(0, 229, 153, 0.5) !important; outline: none !important; opacity: 1 !important; visibility: visible !important;" onclick="event.preventDefault(); event.stopPropagation(); window.safeModalTransition(null, '#nuAIAssistantModal');" aria-label="Ask NU AI">
+            <i class="fas fa-brain nu-ai-spark-icon" style="font-size: 24px !important; color: #00E599 !important; display: inline-block !important; opacity: 1 !important; visibility: visible !important;"></i>
+            <span class="nu-ai-pulse-ring"></span>
+        </button>
+        <div class="nu-ai-tooltip">How can I help you?</div>
+    </div>
+
+    <!-- Bootstrap & jQuery Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <!-- NUOrder Seed Data & Application Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
