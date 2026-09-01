@@ -4,6 +4,9 @@
 
 ### An AI-powered food ordering platform combining food discovery, nutrition intelligence, personalized recommendations, secure payments, and interactive order tracking.
 
+[🌐 Live App](https://nuorder-ai.onrender.com/) •
+[💻 GitHub Repo](https://github.com/badavathmadanlal/NUOrder-AI)
+
 <br/>
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
