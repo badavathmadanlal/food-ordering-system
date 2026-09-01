@@ -1757,8 +1757,8 @@ function renderCartModalView() {
                 <p class="text-muted small mb-4 mx-auto" style="max-width: 320px; line-height: 1.5;">
                     Add delicious food from our restaurants to get started.
                 </p>
-                <button type="button" class="btn btn-accent font-weight-bold px-4 py-2 rounded-pill shadow-sm" id="cartExploreCta" onclick="window.nuExploreFoodFromCart();">
-                    Explore Food <i class="fas fa-arrow-right ml-1"></i>
+                <button type="button" class="btn btn-accent font-weight-bold px-4 py-2 rounded-pill shadow-sm text-white" id="cartExploreCta" onclick="window.nuExploreFoodFromCart();" style="color: #ffffff !important;">
+                    Explore Food <i class="fas fa-arrow-right ml-1 text-white"></i>
                 </button>
             </div>
         `;
@@ -3021,23 +3021,112 @@ window.openOrderTrackingModal = async function(orderId) {
         }
 
         const order = res.data;
-        const rest = NU_RESTAURANTS.find(r => r.id === order.restaurantId) || { name: 'Partner Kitchen' };
+        const rest = NU_RESTAURANTS.find(r => r.id === order.restaurantId) || { name: 'Partner Kitchen', area: 'Central Kitchen' };
         const canCancel = ['PLACED', 'CONFIRMED'].includes(order.status);
         const statusClass = order.status === 'CANCELLED' ? 'badge-danger' : (order.status === 'DELIVERED' ? 'badge-success' : 'badge-warning text-dark');
+
+        const restDist = rest.distanceKm || 2.5;
+        const etaText = order.delivery?.estimatedTime || `${Math.round(20 + restDist * 3)}–${Math.round(28 + restDist * 3)} mins`;
+
+        const statusOrder = ['PLACED', 'CONFIRMED', 'PREPARING', 'OUT_FOR_DELIVERY', 'DELIVERED'];
+        let activeIdx = Math.max(0, statusOrder.indexOf(order.status));
+        if (order.status === 'CONFIRMED') activeIdx = 1;
+        if (order.status === 'PLACED') activeIdx = 0;
+        if (order.status === 'PREPARING') activeIdx = 1;
+        if (order.status === 'OUT_FOR_DELIVERY') activeIdx = 3;
+        if (order.status === 'DELIVERED') activeIdx = 4;
+
+        const progressSteps = [
+            { title: 'Order Placed', desc: 'Order received by kitchen' },
+            { title: 'Preparing Food', desc: 'Chef is cooking your meal' },
+            { title: 'Order Picked Up', desc: 'Delivery partner picked up parcel' },
+            { title: 'On the Way', desc: 'Rider heading to your address' },
+            { title: 'Delivered', desc: 'Order delivered to your doorstep' }
+        ];
+
+        let progressHtml = '<div class="d-flex flex-column gap-2 mb-3">';
+        progressSteps.forEach((s, idx) => {
+            let icon = '○';
+            let itemStyle = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);';
+            let textStyle = 'text-muted';
+
+            if (idx < activeIdx || (order.status === 'DELIVERED' && idx <= activeIdx)) {
+                icon = '✓';
+                itemStyle = 'background: rgba(0, 229, 153, 0.08); border: 1px solid rgba(0, 229, 153, 0.25);';
+                textStyle = 'text-accent font-weight-bold';
+            } else if (idx === activeIdx && order.status !== 'DELIVERED') {
+                icon = '●';
+                itemStyle = 'background: rgba(0, 229, 153, 0.15); border: 1px solid #00e599;';
+                textStyle = 'text-white font-weight-bold';
+            }
+
+            progressHtml += `
+                <div class="d-flex align-items-center p-2 rounded" style="${itemStyle}">
+                    <span class="${textStyle} mr-3 font-weight-bold" style="font-size: 16px; width: 22px; text-align: center;">${icon}</span>
+                    <div>
+                        <strong class="${idx <= activeIdx ? 'text-white' : 'text-muted'} small d-block">${escapeHtml(s.title)}</strong>
+                        <small class="text-muted" style="font-size: 11px;">${escapeHtml(s.desc)}</small>
+                    </div>
+                </div>
+            `;
+        });
+        progressHtml += '</div>';
+
+        const custArea = order.deliveryAddress?.area || order.deliveryAddress?.city || 'Customer Address';
 
         if (container) {
             container.innerHTML = `
                 <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom" style="border-color: var(--nu-border) !important;">
+                    <!-- Header Message & Dynamic ETA -->
+                    <div class="d-flex align-items-center justify-content-between mb-3 p-3 rounded" style="background: rgba(0, 229, 153, 0.1); border: 1px solid var(--nu-accent);">
                         <div>
-                            <h4 class="h5 text-white font-weight-bold mb-0">${escapeHtml(rest.name)}</h4>
-                            <small class="text-muted"><i class="fas fa-clock mr-1"></i>Est. Delivery: ${escapeHtml(order.delivery?.estimatedTime || '25-35 mins')}</small>
+                            <h4 class="text-white font-weight-bold h6 mb-1">Your order is on the way 🛵</h4>
+                            <p class="text-muted small mb-0">Thanks for your patience! Your delivery partner is on the way.</p>
                         </div>
-                        <span class="badge ${statusClass} font-weight-bold px-3 py-2" style="font-size: 12px;">● ${escapeHtml(order.status)}</span>
+                        <div class="text-right ml-2 flex-shrink-0">
+                            <span class="text-muted d-block" style="font-size: 11px;">Estimated Arrival</span>
+                            <strong class="text-accent h6 mb-0 font-weight-bold">${escapeHtml(etaText)}</strong>
+                        </div>
                     </div>
 
-                    <h5 class="text-muted small text-uppercase font-weight-bold mb-2">Delivery Status Progress</h5>
-                    ${renderOrderTimeline(order.status, order.createdAt)}
+                    <!-- Dark Map Simulation with Animated Bike Rider -->
+                    <div class="nu-simulated-map mb-4" style="position: relative; height: 190px; background: #0b1322; border-radius: 14px; border: 1px solid var(--nu-border); overflow: hidden;">
+                        <div class="nu-map-grid" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 0); background-size: 20px 20px; opacity: 0.6;"></div>
+                        
+                        <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none;">
+                            <line x1="15%" y1="50%" x2="85%" y2="50%" stroke="rgba(0, 229, 153, 0.3)" stroke-width="4" stroke-dasharray="6,6" />
+                            <line x1="15%" y1="50%" x2="85%" y2="50%" stroke="#00e599" stroke-width="4" stroke-dasharray="8,8">
+                                <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite" />
+                            </line>
+                        </svg>
+
+                        <!-- Restaurant Marker (Left) -->
+                        <div style="position: absolute; left: 14%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 2;">
+                            <div style="width: 40px; height: 40px; background: #1e293b; border: 2px solid #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-size: 16px; margin: 0 auto; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <span class="badge badge-dark text-white mt-1 shadow-sm d-block" style="font-size: 10px; max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(rest.name)}</span>
+                        </div>
+
+                        <!-- Animated Bike Rider Marker -->
+                        <div style="position: absolute; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 3; animation: nuRiderMove 6s ease-in-out infinite;">
+                            <div style="width: 44px; height: 44px; background: #00e599; border: 2px solid #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0f172a; font-size: 18px; margin: 0 auto; box-shadow: 0 0 16px rgba(0, 229, 153, 0.8);">
+                                <i class="fas fa-motorcycle"></i>
+                            </div>
+                            <span class="badge badge-success text-dark font-weight-bold mt-1 shadow-sm d-block" style="font-size: 10px;">On the Way</span>
+                        </div>
+
+                        <!-- Customer Marker (Right) -->
+                        <div style="position: absolute; left: 86%; top: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 2;">
+                            <div style="width: 40px; height: 40px; background: #1e293b; border: 2px solid #00e599; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #00e599; font-size: 16px; margin: 0 auto; box-shadow: 0 0 12px rgba(0, 229, 153, 0.4);">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <span class="badge badge-dark text-white mt-1 shadow-sm d-block" style="font-size: 10px; max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(custArea)}</span>
+                        </div>
+                    </div>
+
+                    <h5 class="text-muted small text-uppercase font-weight-bold mb-2">Delivery Progress</h5>
+                    ${progressHtml}
 
                     <div class="p-3 border rounded mb-3 mt-3" style="border-color: var(--nu-border) !important; background: var(--nu-surface-card);">
                         <div class="d-flex justify-content-between mb-2">
@@ -3201,6 +3290,26 @@ async function renderMyOrders() {
 }
 window.renderMyOrders = renderMyOrders;
 
+function getOrderNutrition(order) {
+    if (order.nutrition && (order.nutrition.calories > 0 || order.nutrition.protein > 0)) {
+        return order.nutrition;
+    }
+    let calories = 0, protein = 0, carbs = 0, fat = 0;
+    if (Array.isArray(order.items)) {
+        order.items.forEach(item => {
+            const foodId = item.foodId || item.id;
+            const qty = item.quantity || 1;
+            const food = (typeof NU_FOOD_ITEMS !== 'undefined' ? NU_FOOD_ITEMS : []).find(f => f.id === foodId);
+            const n = food?.nutrition || item.nutrition || { calories: 320, protein: 24, carbohydrates: 30, fat: 10 };
+            calories += Math.round((n.calories || 320) * qty);
+            protein += Math.round((n.protein || 24) * qty);
+            carbs += Math.round((n.carbohydrates || n.carbs || 30) * qty);
+            fat += Math.round((n.fat || 10) * qty);
+        });
+    }
+    return { calories, protein, carbohydrates: carbs, fat };
+}
+
 window.openOrderDetailModal = async function(orderId) {
     safeModalTransition('.modal.show', '#nuOrderDetailModal');
 
@@ -3240,6 +3349,8 @@ window.openOrderDetailModal = async function(orderId) {
             `;
         });
 
+        const nutrSnap = getOrderNutrition(order);
+
         if (container) {
             container.innerHTML = `
                 <div class="cart-active-container">
@@ -3263,14 +3374,14 @@ window.openOrderDetailModal = async function(orderId) {
                     <div class="cart-nutrition-box mb-3">
                         <div class="cart-nutrition-header">
                             <span class="cart-nutrition-badge">
-                                <i class="fas fa-heartbeat"></i> Server Nutrition Snapshot
+                                <i class="fas fa-heartbeat"></i> Order Nutrition Summary
                             </span>
                         </div>
                         <div class="cart-nutrition-pills">
-                            <span class="cart-nutrition-item">🔥 <strong>${(order.nutrition?.calories || 0).toLocaleString()}</strong> kcal</span>
-                            <span class="cart-nutrition-item">💪 <strong>${order.nutrition?.protein || 0}g</strong> protein</span>
-                            <span class="cart-nutrition-item">🌾 <strong>${order.nutrition?.carbohydrates || 0}g</strong> carbs</span>
-                            <span class="cart-nutrition-item">🥑 <strong>${order.nutrition?.fat || 0}g</strong> fat</span>
+                            <span class="cart-nutrition-item">🔥 <strong>${nutrSnap.calories.toLocaleString()}</strong> kcal</span>
+                            <span class="cart-nutrition-item">💪 <strong>${nutrSnap.protein}g</strong> protein</span>
+                            <span class="cart-nutrition-item">🌾 <strong>${nutrSnap.carbohydrates}g</strong> carbs</span>
+                            <span class="cart-nutrition-item">🥑 <strong>${nutrSnap.fat}g</strong> fat</span>
                         </div>
                     </div>
 

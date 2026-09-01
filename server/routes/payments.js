@@ -79,6 +79,16 @@ router.post('/create-order', async (req, res) => {
         // 2. Server-Side Recalculation of Items & Nutrition
         let subtotal = 0;
         const verifiedItems = [];
+        const orderNutrition = {
+            calories: 0,
+            protein: 0,
+            carbohydrates: 0,
+            fat: 0,
+            fiber: 0,
+            sugar: 0,
+            sodium: 0
+        };
+
         for (const inputItem of items) {
             const foodId = inputItem.foodId || inputItem.id;
             const quantity = parseInt(inputItem.quantity, 10);
@@ -91,13 +101,23 @@ router.post('/create-order', async (req, res) => {
             const totalPrice = unitPrice * quantity;
             subtotal += totalPrice;
 
+            const baseNutr = serverFood.nutrition || { calories: 320, protein: 24, carbohydrates: 30, fat: 10 };
+            orderNutrition.calories += Math.round((baseNutr.calories || 320) * quantity);
+            orderNutrition.protein += Math.round((baseNutr.protein || 24) * quantity);
+            orderNutrition.carbohydrates += Math.round((baseNutr.carbohydrates || 30) * quantity);
+            orderNutrition.fat += Math.round((baseNutr.fat || 10) * quantity);
+            orderNutrition.fiber += Math.round((baseNutr.fiber || 3) * quantity);
+            orderNutrition.sugar += Math.round((baseNutr.sugar || 4) * quantity);
+            orderNutrition.sodium += Math.round((baseNutr.sodium || 450) * quantity);
+
             verifiedItems.push({
                 foodId: serverFood.id,
                 restaurantId: serverFood.restaurantId,
                 name: serverFood.name,
                 quantity,
                 unitPrice,
-                totalPrice
+                totalPrice,
+                nutrition: baseNutr
             });
         }
 
@@ -158,6 +178,7 @@ router.post('/create-order', async (req, res) => {
             },
             delivery: { type: deliveryType, estimatedTime: '25–35 mins' },
             payment: { method: paymentMethod, status: 'CREATED' },
+            nutrition: orderNutrition,
             status: 'PLACED'
         };
 
