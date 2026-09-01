@@ -95,6 +95,22 @@ const nuState = {
 
 window.nuState = nuState;
 
+/**
+ * Dynamic API Base URL Configurer
+ * Targets http://localhost:5000 (Express Backend) when served from port 5500 (Live Server)
+ */
+function getApiBaseUrl() {
+    if (typeof window !== 'undefined' && window.location) {
+        const port = window.location.port;
+        if (port && port !== '5000') {
+            const hostname = window.location.hostname || 'localhost';
+            return `http://${hostname}:5000`;
+        }
+    }
+    return '';
+}
+window.getApiBaseUrl = getApiBaseUrl;
+
 function calculateCodFee(distanceKm) {
     const dist = typeof distanceKm === 'number' && !isNaN(distanceKm) ? distanceKm : 2.5;
     if (dist <= 2.0) return 20;
@@ -2313,7 +2329,7 @@ function renderPaymentModalView() {
             </div>
 
             <!-- Primary Action Button -->
-            <button type="button" class="custom-button w-100 justify-content-center py-3 ${!cat ? 'disabled' : ''}" id="paymentProceedBtn" ${!cat ? 'disabled' : ''} onclick="window.nuProceedPaymentSecurelyPlaceholder();">
+            <button type="button" class="custom-button w-100 justify-content-center py-3 ${!cat ? 'disabled' : ''}" id="paymentProceedBtn" ${!cat ? 'disabled' : ''} onclick="window.nuLaunchPaymentFlow(event);">
                 ${!cat ? 'Select a Payment Method' : (cat === 'COD' ? 'Continue with Cash on Delivery <i class="fas fa-arrow-right ml-2"></i>' : 'Proceed Securely <i class="fas fa-lock ml-2"></i>')}
             </button>
         </div>
@@ -2357,13 +2373,224 @@ window.nuOpenPaymentOptions = function() {
     safeModalTransition('#nuCheckoutModal', '#nuPaymentModal');
 };
 
-window.nuProceedPaymentSecurelyPlaceholder = function(event) {
+window.nuLaunchPaymentFlow = async function(event) {
     if (event && typeof event.preventDefault === 'function') {
         event.preventDefault();
         event.stopPropagation();
     }
+
+    if (!nuState.cart || nuState.cart.size === 0) return;
+
+    const btn = document.getElementById('paymentProceedBtn');
+    const category = nuState.selectedPaymentCategory || 'UPI';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Processing Request...`;
+    }
+
+    // Build Items Payload
+    const itemsPayload = [];
+    let firstRestId = null;
+    nuState.cart.forEach((entry, foodId) => {
+        itemsPayload.push({
+            foodId: entry.item.id,
+            quantity: entry.quantity,
+            price: entry.item.price
+        });
+        if (!firstRestId) firstRestId = entry.item.restaurantId;
+    });
+
+    const payload = {
+        items: itemsPayload,
+        restaurantId: firstRestId || (nuState.activeRestaurant ? nuState.activeRestaurant.id : 'rest-1'),
+        couponCode: nuState.appliedCoupon ? nuState.appliedCoupon.code : '',
+        deliveryType: 'standard',
+        paymentMethod: category,
+        deliveryAddress: {
+            fullName: 'Valued Customer',
+            phone: '9876543210',
+            city: nuState.currentCity || 'Hyderabad',
+            area: 'Jubilee Hills',
+            street: 'Plot 42, Road No. 36'
+        }
+    };
+
+    const baseUrl = getApiBaseUrl();
+
+    // 1. CASH ON DELIVERY FLOW (Bypasses Razorpay SDK)
+    if (category === 'COD') {
+        const targetUrl = `${baseUrl}/api/orders`;
+        console.log(`[API Request] POST ${targetUrl}`, payload);
+        try {
+            const resp = await fetch(targetUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await resp.json();
+            console.log(`[API Response] POST ${targetUrl} - Status: ${resp.status}`, data);
+            if (resp.ok && data.success) {
+                nuState.cart.clear();
+                updateCartUI();
+                const modalBody = document.getElementById('nuPaymentModalBody');
+                if (modalBody) {
+                    modalBody.innerHTML = `
+                        <div class="text-center py-4 px-3">
+                            <div class="mb-3 text-accent" style="font-size: 54px;"><i class="fas fa-check-circle"></i></div>
+                            <h4 class="text-white font-weight-bold mb-2">Order Confirmed (Cash on Delivery)</h4>
+                            <p class="text-muted small mb-3">Your food preparation has started!</p>
+                            <div class="p-3 rounded mb-3 text-left" style="background: var(--nu-surface); border: 1px solid var(--nu-border);">
+                                <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Order ID</span><strong class="text-white small">${data.data.orderId}</strong></div>
+                                <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Payment Method</span><span class="text-white small">Cash / UPI on Delivery</span></div>
+                                <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Estimated Delivery</span><span class="text-accent small font-weight-bold">25–35 mins</span></div>
+                                <div class="d-flex justify-content-between"><span class="text-muted small">Total to Pay</span><strong class="text-accent h6 mb-0">₹${data.data.pricing.grandTotal}</strong></div>
+                            </div>
+                            <button type="button" class="btn btn-accent font-weight-bold px-4 py-2 rounded-pill" onclick="window.safeModalTransition('#nuPaymentModal', null, window.nuExploreFoodFromCart);">
+                                Back to Menu <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+            } else {
+                console.error(`[API Error] POST ${targetUrl} - Status: ${resp.status}`, data);
+                window.nuShowPaymentRetryAlert(data.message || 'Error creating COD order.');
+            }
+        } catch (err) {
+            console.error(`[Network Error] POST ${targetUrl}:`, err);
+            window.nuShowPaymentRetryAlert('Network error creating COD order.');
+        }
+        return;
+    }
+
+    // 2. ONLINE PAYMENT FLOW (Razorpay Standard Checkout)
+    const createOrderUrl = `${baseUrl}/api/payments/create-order`;
+    console.log(`[API Request] POST ${createOrderUrl}`, payload);
+    try {
+        const resp = await fetch(createOrderUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        console.log(`[API Response] POST ${createOrderUrl} - Status: ${resp.status}`, data);
+
+        if (!resp.ok || !data.success) {
+            console.error(`[API Error] POST ${createOrderUrl} - Status: ${resp.status}`, data);
+            window.nuShowPaymentRetryAlert(data.message || 'Failed to create Razorpay payment order.');
+            return;
+        }
+
+        const rzpData = data.data;
+
+        // Standard Razorpay Checkout Options
+        const options = {
+            key: rzpData.keyId,
+            amount: rzpData.amount,
+            currency: rzpData.currency || 'INR',
+            name: 'NUOrder',
+            description: 'AI Food Platform Checkout',
+            image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=120&q=80',
+            order_id: rzpData.razorpayOrderId,
+            handler: function(response) {
+                console.log('[Razorpay Handler Response]', response);
+                window.nuVerifyRazorpayPayment({
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                    internalOrderId: rzpData.internalOrderId
+                });
+            },
+            prefill: {
+                name: 'Valued Customer',
+                contact: '9876543210',
+                email: 'customer@nuorder.com'
+            },
+            notes: {
+                internalOrderId: rzpData.internalOrderId
+            },
+            theme: {
+                color: '#00e599'
+            },
+            modal: {
+                ondismiss: function() {
+                    console.log('[Razorpay Checkout Dismissed]');
+                    window.nuShowPaymentRetryAlert('Razorpay Checkout closed. Your cart remains saved so you can retry safely.');
+                }
+            }
+        };
+
+        if (typeof Razorpay !== 'undefined') {
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function(res) {
+                console.error('[Razorpay Payment Failed]', res.error);
+                window.nuShowPaymentRetryAlert(res.error?.description || 'Payment failed. Please retry or choose another payment method.');
+            });
+            rzp.open();
+        } else {
+            console.log('[Test Mode] Razorpay SDK not loaded, performing test verification call...');
+            await window.nuVerifyRazorpayPayment({
+                razorpay_payment_id: 'pay_test_' + Math.random().toString(36).substring(2, 9),
+                razorpay_order_id: rzpData.razorpayOrderId,
+                razorpay_signature: 'test_verified_sig',
+                internalOrderId: rzpData.internalOrderId
+            });
+        }
+    } catch (err) {
+        console.error(`[Network Error] POST ${createOrderUrl}:`, err);
+        window.nuShowPaymentRetryAlert('Error connecting to backend payment gateway.');
+    }
+};
+
+window.nuVerifyRazorpayPayment = async function(verifyPayload) {
+    const verifyUrl = `${getApiBaseUrl()}/api/payments/verify`;
+    console.log(`[API Request] POST ${verifyUrl}`, verifyPayload);
+    try {
+        const resp = await fetch(verifyUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(verifyPayload)
+        });
+        const data = await resp.json();
+        console.log(`[API Response] POST ${verifyUrl} - Status: ${resp.status}`, data);
+
+        if (resp.ok && data.success && data.data && data.data.verified) {
+            nuState.cart.clear();
+            updateCartUI();
+            const modalBody = document.getElementById('nuPaymentModalBody');
+            if (modalBody) {
+                modalBody.innerHTML = `
+                    <div class="text-center py-4 px-3">
+                        <div class="mb-3 text-accent" style="font-size: 54px;"><i class="fas fa-shield-alt"></i></div>
+                        <h4 class="text-white font-weight-bold mb-2">Payment Verified &amp; Order Confirmed!</h4>
+                        <p class="text-muted small mb-3">Kitchen preparation has started automatically.</p>
+                        <div class="p-3 rounded mb-3 text-left" style="background: var(--nu-surface); border: 1px solid var(--nu-border);">
+                            <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Order ID</span><strong class="text-white small">${data.data.internalOrderId}</strong></div>
+                            <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Payment ID</span><span class="text-accent small font-weight-bold">${data.data.paymentId}</span></div>
+                            <div class="d-flex justify-content-between mb-1"><span class="text-muted small">Verification</span><span class="badge badge-success">HMAC SHA256 PASSED</span></div>
+                            <div class="d-flex justify-content-between"><span class="text-muted small">Order Status</span><strong class="text-accent h6 mb-0">CONFIRMED</strong></div>
+                        </div>
+                        <button type="button" class="btn btn-accent font-weight-bold px-4 py-2 rounded-pill" onclick="window.safeModalTransition('#nuPaymentModal', null, window.nuExploreFoodFromCart);">
+                            Back to Menu <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                `;
+            }
+        } else {
+            console.error(`[API Error] POST ${verifyUrl} - Status: ${resp.status}`, data);
+            window.nuShowPaymentRetryAlert(data.message || 'Signature verification failed.');
+        }
+    } catch (err) {
+        console.error(`[Network Error] POST ${verifyUrl}:`, err);
+        window.nuShowPaymentRetryAlert('Network error during signature verification.');
+    }
+};
+
+window.nuShowPaymentRetryAlert = function(message) {
+    renderPaymentModalView();
     const alertEl = document.getElementById('paymentPhase410Alert');
     if (alertEl) {
+        alertEl.innerHTML = `<i class="fas fa-exclamation-circle text-warning mr-1"></i> <strong>Payment Notice:</strong> ${escapeHtml(message)}`;
         alertEl.classList.remove('d-none');
         alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }

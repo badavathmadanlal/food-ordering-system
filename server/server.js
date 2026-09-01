@@ -17,6 +17,7 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 const { connectDB } = require('./config/db');
 const aiRoutes = require('./routes/ai');
 const orderRoutes = require('./routes/orders');
+const paymentRoutes = require('./routes/payments');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -66,6 +67,7 @@ app.get('/', (req, res) => {
 // Endpoint Mounts
 app.use('/api/ai', aiRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 Handler
 app.use((req, res) => {

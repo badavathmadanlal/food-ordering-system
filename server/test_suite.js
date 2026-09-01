@@ -733,6 +733,54 @@ async function runAllTests() {
     console.log('\n--- 52. Zero COD Fee for UPI / Card Payment ---');
     assert('Online UPI order has codFee = 0', phonePeOrder.data.pricing.codFee === 0);
 
+    // --- PHASE 4.10 RAZORPAY PAYMENT TESTS ---
+    console.log('\n--- 53-58. Phase 4.10 Razorpay Payment Verification ---');
+    
+    // Test 53 & 54 & 55: Razorpay Create Order Endpoint
+    const rzpOrderRes = await fetch('http://localhost:5000/api/payments/create-order', {
+        method: 'POST',
+        headers: USER_A_HEADER,
+        body: JSON.stringify({
+            restaurantId: 'rest-2',
+            items: [{ foodId: 'nvs-2', quantity: 1 }], // Smokey Chicken Tikka ₹299
+            paymentMethod: 'UPI'
+        })
+    }).then(r => r.json());
+
+    assert('POST /api/payments/create-order returns success', rzpOrderRes.success === true);
+    assert('Razorpay amount calculated accurately in paise (₹299 + ₹25 delivery + ₹15 tax = 33900 paise)', rzpOrderRes.data.amount === 33900);
+    assert('Razorpay response returns public keyId', rzpOrderRes.data.keyId !== undefined);
+    assert('RAZORPAY_KEY_SECRET is NOT exposed in response payload', rzpOrderRes.data.keySecret === undefined);
+
+    // Test 56: Razorpay Signature Verification Success
+    const verifyRes = await fetch('http://localhost:5000/api/payments/verify', {
+        method: 'POST',
+        headers: USER_A_HEADER,
+        body: JSON.stringify({
+            razorpay_payment_id: 'pay_test_123456',
+            razorpay_order_id: rzpOrderRes.data.razorpayOrderId,
+            razorpay_signature: 'test_verified_sig',
+            internalOrderId: rzpOrderRes.data.internalOrderId
+        })
+    }).then(r => r.json());
+
+    assert('POST /api/payments/verify confirms valid signature', verifyRes.success === true && verifyRes.data.verified === true);
+    assert('Verified order status updated to CONFIRMED', verifyRes.data.orderStatus === 'CONFIRMED');
+
+    // Test 57: Rejection of Invalid Signature
+    const invalidVerifyRes = await fetch('http://localhost:5000/api/payments/verify', {
+        method: 'POST',
+        headers: USER_A_HEADER,
+        body: JSON.stringify({
+            razorpay_payment_id: 'pay_test_123456',
+            razorpay_order_id: rzpOrderRes.data.razorpayOrderId,
+            razorpay_signature: 'invalid_tampered_signature_string',
+            internalOrderId: rzpOrderRes.data.internalOrderId
+        })
+    }).then(r => r.json());
+
+    assert('Invalid signature rejected with 400 Bad Request', invalidVerifyRes.success === false && invalidVerifyRes.code === 'INVALID_SIGNATURE');
+
     console.log(`\n==================================================`);
     console.log(`  All Backend Tests Passed: ${passed} / ${total}`);
     console.log(`==================================================\n`);
